@@ -28,9 +28,9 @@ TERMS = """test basis = base de prueba; test object = objeto de prueba; test cas
 test condition = condición de prueba; test procedure = procedimiento de prueba; test suite = juego de pruebas;
 test plan = plan de prueba; test level = nivel de prueba; test type = tipo de prueba; test item = elemento de prueba;
 test objective = objetivo de prueba; test oracle = oráculo de prueba; test data = datos de prueba;
-test environment = entorno de prueba; testware = productos de prueba (testware); test completion = compleción de la prueba;
-test monitoring = monitorización de la prueba; test control = control de la prueba; test analysis = análisis de la prueba;
-test design = diseño de la prueba; test implementation = implementación de la prueba; test execution = ejecución de la prueba;
+test environment = entorno de prueba; testware = productos de prueba (testware); test completion = cierre de las pruebas;
+test monitoring = monitorización de las pruebas; test control = control de las pruebas; test analysis = análisis de las pruebas;
+test design = diseño de las pruebas; test implementation = implementación de las pruebas; test execution = ejecución de las pruebas; tester = tester;
 defect = defecto; failure = fallo; error = error (equivocación); root cause = causa raíz; debugging = depuración;
 static testing = prueba estática; dynamic testing = prueba dinámica; review = revisión; inspection = inspección;
 walkthrough = revisión guiada; technical review = revisión técnica; informal review = revisión informal;
@@ -40,7 +40,7 @@ statement coverage = cobertura de sentencia; branch coverage = cobertura de rama
 white-box testing = prueba de caja blanca; black-box testing = prueba de caja negra;
 experience-based testing = prueba basada en la experiencia; error guessing = predicción de errores;
 exploratory testing = prueba exploratoria; checklist-based testing = prueba basada en listas de comprobación;
-test charter = contrato de prueba; acceptance criteria = criterios de aceptación; user story = historia de usuario;
+test charter = test charter; acceptance criteria = criterios de aceptación; user story = historia de usuario;
 acceptance test-driven development (ATDD) = desarrollo guiado por pruebas de aceptación (ATDD);
 component testing = prueba de componente; integration testing = prueba de integración; system testing = prueba de sistema;
 acceptance testing = prueba de aceptación; functional testing = prueba funcional; non-functional testing = prueba no funcional;
@@ -48,8 +48,9 @@ confirmation testing = prueba de confirmación; regression testing = prueba de r
 risk = riesgo; product risk = riesgo de producto; project risk = riesgo de proyecto; risk-based testing = prueba basada en riesgos;
 risk level = nivel de riesgo; entry criteria = criterios de entrada; exit criteria = criterios de salida;
 test pyramid = pirámide de prueba; testing quadrants = cuadrantes de prueba; shift left = shift left (desplazamiento a la izquierda);
-defect report = informe de defecto; test progress report = informe de avance de la prueba; test completion report = informe de compleción de la prueba;
+defect report = informe de defecto; test progress report = informe de avance de la prueba; test completion report = informe de cierre de las pruebas;
 configuration management = gestión de la configuración; stakeholder = parte interesada (stakeholder);
+whole team approach = enfoque de equipo completo; scribe = escriba; review leader = líder de la revisión; moderator = moderador;
 verification = verificación; validation = validación; quality assurance = aseguramiento de la calidad; quality control = control de la calidad;
 DevOps, CI/CD, sprint, backlog, mock, stub, driver = se dejan en inglés"""
 
@@ -57,6 +58,29 @@ SYSTEM = ("You are a professional technical translator for ISTQB Certified Teste
           "Translate faithfully: keep meaning, numbers, variable names, quoted values, symbols and section numbers exactly. "
           "Do not add, drop or explain anything. Use this terminology, in either direction:\n" + TERMS +
           "\nReply with JSON only, with exactly the same keys and structure as the input.")
+
+
+# Terms the model got wrong despite the list above, fixed after review: (regex, replacement) on Spanish output.
+POST_FIX = [(r"enfoque de todo el equipo", "enfoque de equipo completo"), (r"Actuario \(secretario\)", "Escriba"),
+            (r"(?i)\bactuario\b", "escriba"), (r"líder de la revisión o acta\b", "líder de la revisión o escriba"),
+            # Literal renderings that sound unnatural in Spanish; working testers say it this way.
+            (r"\bprobadores\b", "testers"), (r"\bprobador\b", "tester"), (r"\bProbadores\b", "Testers"), (r"\bProbador\b", "Tester"),
+            (r"(?i)compleción de (la|las) pruebas?", "cierre de las pruebas"), (r"compleción", "cierre"), (r"Compleción", "Cierre"),
+            (r"contratos? de prueba", "test charter"),
+            (r"\b(análisis|diseño|implementación|ejecución|planificación|monitorización|control|gestión|estado|avance|valor|resultados) de la prueba\b", r"\1 de las pruebas"),
+            (r"\b(plan|planes|estrategia|esfuerzo|proceso|equipo|equipos|actividades|prácticas) de prueba\b", r"\1 de pruebas")]
+
+
+def postfix(x):
+    if isinstance(x, str):
+        for a, b in POST_FIX:
+            x = re.sub(a, b, x)
+        return x
+    if isinstance(x, list):
+        return [postfix(i) for i in x]
+    if isinstance(x, dict):
+        return {k: postfix(v) for k, v in x.items()}
+    return x
 
 
 def h(obj):
@@ -179,6 +203,13 @@ def check():
 def main(argv):
     if "--check" in argv:
         return check()
+    if "--fix" in argv:  # re-apply POST_FIX to stored Spanish translations
+        db = load()
+        for k, v in db["items"].items():
+            if k.split(":")[0] in ("q", "lo", "sec", "ch"):
+                v["t"] = postfix(v["t"])
+        save(db)
+        return 0
     limit = int(argv[argv.index("--limit") + 1]) if "--limit" in argv else 10 ** 9
     db = load()
     todo = [(k, t, s) for k, t, s in jobs() if db["items"].get(k, {}).get("h") != h(s)]
@@ -212,7 +243,7 @@ def main(argv):
                             retry.append((k, s))
                             print(f"  rejected {k}: {why}", flush=True)
                         else:
-                            db["items"][k] = {"h": h(s), "t": out[k]}
+                            db["items"][k] = {"h": h(s), "t": postfix(out[k]) if target == "es" else out[k]}
                     save(db)
                 chunk = retry
                 if not chunk:
