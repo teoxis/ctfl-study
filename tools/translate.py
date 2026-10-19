@@ -66,7 +66,8 @@ POST_FIX = [(r"enfoque de todo el equipo", "enfoque de equipo completo"), (r"Act
             # Literal renderings that sound unnatural in Spanish; working testers say it this way.
             (r"\bprobadores\b", "testers"), (r"\bprobador\b", "tester"), (r"\bProbadores\b", "Testers"), (r"\bProbador\b", "Tester"),
             (r"(?i)compleción de (la|las) pruebas?", "cierre de las pruebas"), (r"compleción", "cierre"), (r"Compleción", "Cierre"),
-            (r"contratos? de prueba", "test charter"),
+            (r"(?i)contratos? de prueba", "test charter"), (r"(?i)compleción", "cierre"), (r"\bun métrica", "una métrica"),
+            (r"enfoque de equipo completo \(whole[- ]team\)", "enfoque de equipo completo"),
             (r"\b(análisis|diseño|implementación|ejecución|planificación|monitorización|control|gestión|estado|avance|valor|resultados) de la prueba\b", r"\1 de las pruebas"),
             (r"\b(plan|planes|estrategia|esfuerzo|proceso|equipo|equipos|actividades|prácticas) de prueba\b", r"\1 de pruebas")]
 
@@ -88,7 +89,8 @@ def h(obj):
 
 
 def nums(s):
-    return sorted(re.findall(r"\d+(?:[.,]\d+)?", json.dumps(s, ensure_ascii=False)))
+    # Decimal comma and thousands dot differ by language: compare the digits, not the separator.
+    return sorted(x.replace(",", ".") for x in re.findall(r"\d+(?:[.,]\d+)?", json.dumps(s, ensure_ascii=False)))
 
 
 ES_WORDS = re.compile(r"\b(el|la|los|las|que|una|un|del|de|en|y|para|es|se|por|con|no|al|lo|su|sus|pueden|puede)\b", re.I)
@@ -192,7 +194,8 @@ def check():
         if not it or it["h"] != h(src):
             missing += 1
             continue
-        why = valid(src, it["t"], target)
+        # Items marked "m" were translated or reviewed by hand: only their structure and numbers are checked.
+        why = ("" if same_shape(src, it["t"]) else "shape") if it.get("m") else valid(src, it["t"], target)
         if why:
             bad += 1
             print("INVALID", key, why)
