@@ -6,7 +6,7 @@ Spanish with English titles. This script asks an OpenAI-compatible model for the
 every answer mechanically (same ids, same option count, same numbers, right language). It is incremental:
 items whose source text has not changed since the last run are skipped.
 
-Usage:  LLM_URL=http://127.0.0.1:8080/v1 LLM_KEY=... LLM_MODEL=... python3 tools/translate.py [--limit N]
+Usage:  LLM_URL=http://127.0.0.1:8080/v1 LLM_KEY=... LLM_MODEL=... python3 tools/translate.py [--limit N] [--chapter N] [--cert ctai]
         python3 tools/translate.py --check      (validate data/i18n.json against the bank, no model calls)
 """
 import hashlib
@@ -204,6 +204,10 @@ def check():
 
 
 def main(argv):
+    global DATA, OUT
+    if "--cert" in argv:  # e.g. --cert ctai -> data/ctai/
+        DATA = ROOT / "data" / argv[argv.index("--cert") + 1]
+        OUT = DATA / "i18n.json"
     if "--check" in argv:
         return check()
     if "--fix" in argv:  # re-apply POST_FIX to stored Spanish translations

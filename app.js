@@ -2,17 +2,43 @@
 /* Banco CTFL — static PWA, no backend. Progress lives in localStorage and can be
    exported/imported as a text code or a .json file. */
 
-const SYLLABUS_URL = "https://istqb.org/?sdm_process_download=1&download_id=3345";
+// Each certification has its own data folder, progress and exam rules; the app shows one at a time.
+const CERTS = {
+  ctfl: {
+    id: "ctfl", title: "Banco CTFL", eyebrow: "ISTQB® Certified Tester Foundation Level · Syllabus v4.0.1", ver: "v4.0.1",
+    dir: "data/", chapters: [1, 2, 3, 4, 5, 6], loPrefix: "FL-", syllabusId: 3345, pass: 26, examReady: true,
+    lsKey: "ctfl-study-v1", examKey: "ctfl-study-exam",
+    facts: [["40 preguntas · 1 punto", "40 questions · 1 point"], ["60 min (75 no nativos)", "60 min (75 non-native)"], ["Aprobado: 26/40", "Pass mark: 26/40"]],
+    official: [
+      ["Syllabus CTFL v4.0.1 (PDF)", 3345],
+      ["Sample Exam A · preguntas", 3352], ["Sample Exam A · respuestas", 3357],
+      ["Sample Exam B · preguntas", 3359], ["Sample Exam B · respuestas", 3365],
+      ["Sample Exam C · preguntas", 3369], ["Sample Exam C · respuestas", 3372],
+      ["Sample Exam D · preguntas", 3376], ["Sample Exam D · respuestas", 3380],
+      ["Exam Structures and Rules", 3829], ["Exam Structures & Rules Tables (reparto por LO)", 3832],
+    ],
+    names: {1: "Fundamentals of Testing", 2: "Testing Throughout the SDLC", 3: "Static Testing", 4: "Test Analysis and Design", 5: "Managing the Test Activities", 6: "Test Tools"},
+  },
+  ctai: {
+    id: "ctai", title: "Banco CT-AI", eyebrow: "ISTQB® Certified Tester AI Testing · Syllabus v2.0", ver: "v2.0",
+    dir: "data/ctai/", chapters: [1], loPrefix: "AI-", syllabusId: 9558, pass: 29, examReady: false,
+    lsKey: "ctai-study-v1", examKey: "ctai-study-exam",
+    facts: [["40 preguntas · 44 puntos", "40 questions · 44 points"], ["60 min (75 no nativos)", "60 min (75 non-native)"], ["Aprobado: 29/44", "Pass mark: 29/44"]],
+    official: [
+      ["Syllabus CT-AI v2.0 (PDF)", 9558],
+      ["Sample Exam A · preguntas", 9561], ["Sample Exam A · respuestas", 9564],
+      ["Exam Structures and Rules", 3829], ["Exam Structures & Rules Tables (reparto por LO)", 3832],
+    ],
+    names: {1: "Introduction to Artificial Intelligence", 2: "Quality Characteristics for AI-Based Systems", 3: "Machine Learning", 4: "Testing AI-Based Systems", 5: "Input Data Testing for Machine Learning Systems", 6: "Model Testing for Machine Learning Systems", 7: "Machine Learning Development Testing"},
+  },
+};
+let CERT = CERTS.ctfl;
+try { CERT = CERTS[localStorage.getItem("study-cert")] || CERTS.ctfl; } catch (e) { /* storage blocked: default */ }
+const SYLLABUS_URL = "https://istqb.org/?sdm_process_download=1&download_id=" + CERT.syllabusId;
 const GLOSSARY_URL = t => "https://glossary.istqb.org/en_US/search?term=" + encodeURIComponent(t);
-const OFFICIAL = [
-  ["Syllabus CTFL v4.0.1 (PDF)", 3345],
-  ["Sample Exam A · preguntas", 3352], ["Sample Exam A · respuestas", 3357],
-  ["Sample Exam B · preguntas", 3359], ["Sample Exam B · respuestas", 3365],
-  ["Sample Exam C · preguntas", 3369], ["Sample Exam C · respuestas", 3372],
-  ["Sample Exam D · preguntas", 3376], ["Sample Exam D · respuestas", 3380],
-  ["Exam Structures and Rules", 3829], ["Exam Structures & Rules Tables (reparto por LO)", 3832],
-];
-const CHAPTER_NAMES = {1: "Fundamentals of Testing", 2: "Testing Throughout the SDLC", 3: "Static Testing", 4: "Test Analysis and Design", 5: "Managing the Test Activities", 6: "Test Tools"};
+const OFFICIAL = CERT.official;
+const CHAPTER_NAMES = CERT.names;
+const SYL_PAGE = (prefix = "") => L(prefix + "Syllabus v4.0.1, pág. ").replace("v4.0.1", CERT.ver);
 const LETTERS = ["A", "B", "C", "D"];
 
 const CARDS = [
@@ -50,7 +76,7 @@ const CARDS = [
 ];
 
 // ---------------- persistence ----------------
-const LS_KEY = "ctfl-study-v1", EXAM_KEY = "ctfl-study-exam";
+const LS_KEY = CERT.lsKey, EXAM_KEY = CERT.examKey;
 const blank = () => ({ v: 1, q: {}, cards: {}, exams: [], seen: {}, updatedAt: 0 });
 let P = blank();
 function lsGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
@@ -108,13 +134,14 @@ async function decodeProgress(code) {
 // ---------------- data ----------------
 let Q = [], QBY = {}, EXAM = null, SYL = null, LO_INFO = {}, I18N = {}, GLOSS = [];
 async function loadData() {
-  const files = [1, 2, 3, 4, 5, 6].map(n => `data/bank-ch${n}.json`).concat(["data/exam.json", "data/syllabus.json"]);
+  const files = CERT.chapters.map(n => `${CERT.dir}bank-ch${n}.json`).concat([CERT.dir + "exam.json", CERT.dir + "syllabus.json"]);
   const res = await Promise.all(files.map(f => fetch(f).then(r => { if (!r.ok) throw new Error(f); return r.json(); })));
-  Q = res.slice(0, 6).flat();
-  EXAM = res[6]; SYL = res[7];
+  const nch = CERT.chapters.length;
+  Q = res.slice(0, nch).flat();
+  EXAM = res[nch]; SYL = res[nch + 1];
   // Optional: the other-language half of every text (tools/translate.py). Without it the app shows the originals.
-  GLOSS = await fetch("data/glossary.json").then(r => r.ok ? r.json() : []).catch(() => []);
-  I18N = await fetch("data/i18n.json").then(r => r.ok ? r.json() : {}).then(d => d.items || {}).catch(() => ({}));
+  GLOSS = await fetch(CERT.dir + "glossary.json").then(r => r.ok ? r.json() : []).catch(() => []);
+  I18N = await fetch(CERT.dir + "i18n.json").then(r => r.ok ? r.json() : {}).then(d => d.items || {}).catch(() => ({}));
   for (const x of Q) QBY[x.id] = x;
   for (const ch of SYL.chapters) for (const s of ch.sections) for (const lo of s.los) LO_INFO[lo.lo] = { ...lo, ch: ch.ch, sec: s.sec, secTitle: s.title };
 }
@@ -124,7 +151,7 @@ async function loadData() {
 let LANG = "en";
 try { LANG = localStorage.getItem("ctfl-lang") === "es" ? "es" : "en"; } catch (e) { /* storage blocked: default */ }
 // Interface strings are written in Spanish; UI_EN holds their English version.
-const UI_EN = {"Sample Exam A · preguntas": "Sample Exam A · questions","Sample Exam B · preguntas": "Sample Exam B · questions","Sample Exam C · preguntas": "Sample Exam C · questions","Sample Exam D · preguntas": "Sample Exam D · questions","Sample Exam A · respuestas": "Sample Exam A · answers","Sample Exam B · respuestas": "Sample Exam B · answers","Sample Exam C · respuestas": "Sample Exam C · answers","Sample Exam D · respuestas": "Sample Exam D · answers","Exam Structures & Rules Tables (reparto por LO)": "Exam Structures & Rules Tables (split by LO)","No se puede guardar en este navegador (¿modo privado?). Exporta tu progreso antes de cerrar.": "This browser cannot save (private mode?). Export your progress before closing.","El código no tiene el formato esperado (debe empezar por CTFL1: o CTFL0:).": "The code is not in the expected format (it must start with CTFL1: or CTFL0:).","Este navegador no puede descomprimir el código. Usa la copia en fichero .json.": "This browser cannot decompress the code. Use the .json backup file instead."," preguntas en el banco": " questions in the bank","Dominio global: ": "Overall mastery: ","Sin simulacros todavía": "No mock exams yet","Mejor simulacro: ": "Best mock exam: ","Cap. ": "Ch. ","Correcta": "Correct","Incorrecta · correcta: ": "Incorrect · correct: ","Sin responder · correcta: ": "Not answered · correct: ","Estudia esto: ": "Study this: ","Syllabus v4.0.1, pág. ": "Syllabus v4.0.1, p. ","Pregunta": "Question","Opciones": "Options","Original": "Original","Práctica por capítulos": "Practice by chapter","Tandas de 10, primero lo que no dominas": "Sets of 10, weakest questions first"," preguntas · ": " questions · "," en examen": " in the exam","Capítulos ": "Chapters ","¿Quieres practicar un objetivo concreto? Ve a Temario y pulsa «Practicar» en cualquier LO.": "Want to practise one learning objective? Go to Syllabus and tap \"Practise\" on any LO.","Terminar": "Finish","Siguiente": "Next","Ver resultado": "See result","Elige una respuesta": "Choose an answer","Tanda terminada": "Set finished","Otra tanda": "Another set","Por encima del 65 % que exige el examen.": "Above the 65% the exam requires.","Por debajo del 65 %. Las falladas pasan a la pestaña Falladas.": "Below 65%. Wrong answers go to the Mistakes tab.","Simulacro de examen": "Mock exam","40 preguntas repartidas exactamente como el examen oficial: por capítulo (8 · 6 · 4 · 11 · 9 · 2), por grupo de objetivos y por nivel K (8 K1 · 24 K2 · 8 K3). Primero salen las preguntas que menos has visto en simulacros. No verás si aciertas hasta entregar. Cada pregunta vale 1 punto y se aprueba con 26.": "40 questions split exactly like the official exam: by chapter (8 · 6 · 4 · 11 · 9 · 2), by objective group and by K-level (8 K1 · 24 K2 · 8 K3). Questions you have seen least in mock exams come first. You will not see whether you are right until you submit. Each question is worth 1 point and the pass mark is 26.","Duración": "Duration","75 min (no nativo, +25 %)": "75 min (non-native, +25%)","60 min (estándar)": "60 min (standard)","Empezar simulacro": "Start mock exam","Navegador de preguntas": "Question navigator","/40 respondidas": "/40 answered","Pregunta ": "Question ","Anterior": "Previous","Quitar marca": "Unflag","Marcar": "Flag","Confirmar entrega": "Confirm submission","Entregar": "Submit","Quedan ": "Remaining: "," sin responder. Pulsa «Confirmar entrega» para corregir.": " unanswered. Tap \"Confirm submission\" to grade.","Abandonar simulacro": "Abandon mock exam","Pulsa otra vez para abandonar sin guardar": "Tap again to abandon without saving","Se acabó el tiempo: el simulacro se ha corregido automáticamente.": "Time is up: the mock exam was graded automatically.","Resultado del simulacro": "Mock exam result","Aprobado (26 o más).": "Pass (26 or more).","Suspenso: faltan ": "Fail: "," para el 26.": " short of 26.","Capítulo": "Chapter","Aciertos": "Correct","Nivel K": "K-level"," · recordar": " · remember"," · comprender": " · understand"," · aplicar": " · apply","Revisión pregunta a pregunta": "Question-by-question review","Cerrar simulacro": "Close mock exam","Fecha": "Date","Nota": "Score","Aprobado": "Pass","Suspenso": "Fail","Últimos simulacros": "Recent mock exams","Preguntas falladas": "Mistakes","No tienes preguntas pendientes. Cuando falles una en Práctica o en un simulacro, aparecerá aquí hasta que la aciertes dos veces seguidas.": "No questions pending. When you miss one in Practice or in a mock exam, it shows up here until you get it right twice in a row."," pendientes. Una pregunta sale de aquí cuando la aciertas dos veces seguidas.": " pending. A question leaves this list when you get it right twice in a row.","Repasar ": "Review ","Temario": "Syllabus","Resúmenes propios por objetivo de aprendizaje": "Own summaries per learning objective","Materiales oficiales (gratis, istqb.org)": "Official materials (free, istqb.org)","Estudia con el syllabus oficial delante: cada objetivo indica su página. Los niveles K indican la profundidad: K1 recordar, K2 comprender, K3 aplicar.": "Study with the official syllabus open: each objective shows its page. K-levels give the depth: K1 remember, K2 understand, K3 apply.","Glosario oficial: ": "Official glossary: "," min · ": " min · ","pág. ": "p. "," · Syllabus v4.0.1, pág. ": " · Syllabus v4.0.1, p. ","Abrir en el glosario oficial": "Open in the official glossary","Practicar (": "Practise (","Dominio ": "Mastery ","Practicando FL-": "Practising FL-","Modo": "Mode","Glosario": "Glossary"," dominados": " mastered","Girar tarjeta": "Flip card","Término · toca para girar": "Term · tap to flip","Repasar otra vez": "Review again","Me lo sé": "I know it","Definición oficial ↗": "Official definition ↗","Progreso": "Progress","Dominio": "Mastery","Vistas": "Seen","Acierto": "Accuracy","Todas las K": "All K","Dominio: una pregunta cuenta como dominada cuando la aciertas tres veces seguidas; si la fallas, vuelve a cero.": "Mastery: a question counts as mastered when you get it right three times in a row; if you miss it, it goes back to zero.","Código de progreso": "Progress code","Aquí aparecerá tu código, o pega aquí el código del otro dispositivo.": "Your code appears here, or paste the code from your other device.","No se pudo leer el fichero: ": "Could not read the file: ","Copia de seguridad y sincronización": "Backup and sync","Tu progreso solo vive en este navegador. Para pasarlo al móvil (o al revés): «Copiar progreso» aquí, y «Pegar y fusionar» en el otro dispositivo. Al fusionar se conserva, para cada pregunta, la respuesta más reciente, y se juntan los simulacros de los dos.": "Your progress lives only in this browser. To move it to your phone (or back): \"Copy progress\" here, then \"Paste and merge\" on the other device. Merging keeps the most recent answer for each question and joins the mock exams from both.","Código copiado al portapapeles.": "Code copied to the clipboard.","Selecciona el texto y cópialo a mano.": "Select the text and copy it by hand.","Copiar progreso": "Copy progress","Pega primero el código del otro dispositivo en el cuadro.": "First paste the code from the other device into the box.","Progreso fusionado.": "Progress merged.","Código no válido.": "Invalid code.","Pegar y fusionar": "Paste and merge","Descargar copia (.json)": "Download backup (.json)","Copia importada y fusionada.": "Backup imported and merged.","Importar copia (.json)": "Import backup (.json)","Progreso borrado.": "Progress deleted.","Pulsa otra vez para borrar todo el progreso": "Tap again to delete all progress","Borrar progreso": "Delete progress","No se pudo cargar el banco de preguntas. Comprueba la conexión la primera vez que abras la app; después funciona sin conexión.": "Could not load the question bank. Check your connection the first time you open the app; after that it works offline.","Hay una versión nueva del banco.": "A new version is available.","Actualizar": "Update","Capítulo ": "Chapter ","Toca un capítulo para practicarlo": "Tap a chapter to practise it","Tanda mixta (todos los capítulos)": "Mixed set (all chapters)"};
+const UI_EN = {"Sample Exam A · preguntas": "Sample Exam A · questions","Sample Exam B · preguntas": "Sample Exam B · questions","Sample Exam C · preguntas": "Sample Exam C · questions","Sample Exam D · preguntas": "Sample Exam D · questions","Sample Exam A · respuestas": "Sample Exam A · answers","Sample Exam B · respuestas": "Sample Exam B · answers","Sample Exam C · respuestas": "Sample Exam C · answers","Sample Exam D · respuestas": "Sample Exam D · answers","Exam Structures & Rules Tables (reparto por LO)": "Exam Structures & Rules Tables (split by LO)","No se puede guardar en este navegador (¿modo privado?). Exporta tu progreso antes de cerrar.": "This browser cannot save (private mode?). Export your progress before closing.","El código no tiene el formato esperado (debe empezar por CTFL1: o CTFL0:).": "The code is not in the expected format (it must start with CTFL1: or CTFL0:).","Este navegador no puede descomprimir el código. Usa la copia en fichero .json.": "This browser cannot decompress the code. Use the .json backup file instead."," preguntas en el banco": " questions in the bank","Dominio global: ": "Overall mastery: ","Sin simulacros todavía": "No mock exams yet","Mejor simulacro: ": "Best mock exam: ","Cap. ": "Ch. ","Correcta": "Correct","Incorrecta · correcta: ": "Incorrect · correct: ","Sin responder · correcta: ": "Not answered · correct: ","Estudia esto: ": "Study this: ","Syllabus v4.0.1, pág. ": "Syllabus v4.0.1, p. ","Pregunta": "Question","Opciones": "Options","Original": "Original","Práctica por capítulos": "Practice by chapter","Tandas de 10, primero lo que no dominas": "Sets of 10, weakest questions first"," preguntas · ": " questions · "," en examen": " in the exam","Capítulos ": "Chapters ","¿Quieres practicar un objetivo concreto? Ve a Temario y pulsa «Practicar» en cualquier LO.": "Want to practise one learning objective? Go to Syllabus and tap \"Practise\" on any LO.","Terminar": "Finish","Siguiente": "Next","Ver resultado": "See result","Elige una respuesta": "Choose an answer","Tanda terminada": "Set finished","Otra tanda": "Another set","Por encima del 65 % que exige el examen.": "Above the 65% the exam requires.","Por debajo del 65 %. Las falladas pasan a la pestaña Falladas.": "Below 65%. Wrong answers go to the Mistakes tab.","Simulacro de examen": "Mock exam","40 preguntas repartidas exactamente como el examen oficial: por capítulo (8 · 6 · 4 · 11 · 9 · 2), por grupo de objetivos y por nivel K (8 K1 · 24 K2 · 8 K3). Primero salen las preguntas que menos has visto en simulacros. No verás si aciertas hasta entregar. Cada pregunta vale 1 punto y se aprueba con 26.": "40 questions split exactly like the official exam: by chapter (8 · 6 · 4 · 11 · 9 · 2), by objective group and by K-level (8 K1 · 24 K2 · 8 K3). Questions you have seen least in mock exams come first. You will not see whether you are right until you submit. Each question is worth 1 point and the pass mark is 26.","Duración": "Duration","75 min (no nativo, +25 %)": "75 min (non-native, +25%)","60 min (estándar)": "60 min (standard)","Empezar simulacro": "Start mock exam","Navegador de preguntas": "Question navigator","/40 respondidas": "/40 answered","Pregunta ": "Question ","Anterior": "Previous","Quitar marca": "Unflag","Marcar": "Flag","Confirmar entrega": "Confirm submission","Entregar": "Submit","Quedan ": "Remaining: "," sin responder. Pulsa «Confirmar entrega» para corregir.": " unanswered. Tap \"Confirm submission\" to grade.","Abandonar simulacro": "Abandon mock exam","Pulsa otra vez para abandonar sin guardar": "Tap again to abandon without saving","Se acabó el tiempo: el simulacro se ha corregido automáticamente.": "Time is up: the mock exam was graded automatically.","Resultado del simulacro": "Mock exam result","Aprobado (26 o más).": "Pass (26 or more).","Suspenso: faltan ": "Fail: "," para el 26.": " short of 26.","Capítulo": "Chapter","Aciertos": "Correct","Nivel K": "K-level"," · recordar": " · remember"," · comprender": " · understand"," · aplicar": " · apply","Revisión pregunta a pregunta": "Question-by-question review","Cerrar simulacro": "Close mock exam","Fecha": "Date","Nota": "Score","Aprobado": "Pass","Suspenso": "Fail","Últimos simulacros": "Recent mock exams","Preguntas falladas": "Mistakes","No tienes preguntas pendientes. Cuando falles una en Práctica o en un simulacro, aparecerá aquí hasta que la aciertes dos veces seguidas.": "No questions pending. When you miss one in Practice or in a mock exam, it shows up here until you get it right twice in a row."," pendientes. Una pregunta sale de aquí cuando la aciertas dos veces seguidas.": " pending. A question leaves this list when you get it right twice in a row.","Repasar ": "Review ","Temario": "Syllabus","Resúmenes propios por objetivo de aprendizaje": "Own summaries per learning objective","Materiales oficiales (gratis, istqb.org)": "Official materials (free, istqb.org)","Estudia con el syllabus oficial delante: cada objetivo indica su página. Los niveles K indican la profundidad: K1 recordar, K2 comprender, K3 aplicar.": "Study with the official syllabus open: each objective shows its page. K-levels give the depth: K1 remember, K2 understand, K3 apply.","Glosario oficial: ": "Official glossary: "," min · ": " min · ","pág. ": "p. "," · Syllabus v4.0.1, pág. ": " · Syllabus v4.0.1, p. ","Abrir en el glosario oficial": "Open in the official glossary","Practicar (": "Practise (","Dominio ": "Mastery ","Practicando ": "Practising ","← Volver al temario: ": "← Back to the syllabus: ","Modo": "Mode","Glosario": "Glossary"," dominados": " mastered","Girar tarjeta": "Flip card","Término · toca para girar": "Term · tap to flip","Repasar otra vez": "Review again","Me lo sé": "I know it","Definición oficial ↗": "Official definition ↗","Progreso": "Progress","Dominio": "Mastery","Vistas": "Seen","Acierto": "Accuracy","Todas las K": "All K","Dominio: una pregunta cuenta como dominada cuando la aciertas tres veces seguidas; si la fallas, vuelve a cero.": "Mastery: a question counts as mastered when you get it right three times in a row; if you miss it, it goes back to zero.","Código de progreso": "Progress code","Aquí aparecerá tu código, o pega aquí el código del otro dispositivo.": "Your code appears here, or paste the code from your other device.","No se pudo leer el fichero: ": "Could not read the file: ","Copia de seguridad y sincronización": "Backup and sync","Tu progreso solo vive en este navegador. Para pasarlo al móvil (o al revés): «Copiar progreso» aquí, y «Pegar y fusionar» en el otro dispositivo. Al fusionar se conserva, para cada pregunta, la respuesta más reciente, y se juntan los simulacros de los dos.": "Your progress lives only in this browser. To move it to your phone (or back): \"Copy progress\" here, then \"Paste and merge\" on the other device. Merging keeps the most recent answer for each question and joins the mock exams from both.","Código copiado al portapapeles.": "Code copied to the clipboard.","Selecciona el texto y cópialo a mano.": "Select the text and copy it by hand.","Copiar progreso": "Copy progress","Pega primero el código del otro dispositivo en el cuadro.": "First paste the code from the other device into the box.","Progreso fusionado.": "Progress merged.","Código no válido.": "Invalid code.","Pegar y fusionar": "Paste and merge","Descargar copia (.json)": "Download backup (.json)","Copia importada y fusionada.": "Backup imported and merged.","Importar copia (.json)": "Import backup (.json)","Progreso borrado.": "Progress deleted.","Pulsa otra vez para borrar todo el progreso": "Tap again to delete all progress","Borrar progreso": "Delete progress","No se pudo cargar el banco de preguntas. Comprueba la conexión la primera vez que abras la app; después funciona sin conexión.": "Could not load the question bank. Check your connection the first time you open the app; after that it works offline.","Hay una versión nueva del banco.": "A new version is available.","Actualizar": "Update","Capítulo ": "Chapter ","Toca un capítulo para practicarlo": "Tap a chapter to practise it","Tanda mixta (todos los capítulos)": "Mixed set (all chapters)","El simulacro estará disponible cuando estén todos los capítulos. Mientras, practica por capítulos en la pestaña Practicar.": "The mock exam will be available once all chapters are ready. Meanwhile, practise by chapter in the Practice tab."};
 const L = es => (LANG === "en" && UI_EN[es] != null) ? UI_EN[es] : es;
 const tr = (key, field, original, lang = LANG, native = "en") => (lang !== native && I18N[key] && I18N[key].t[field] != null) ? I18N[key].t[field] : original;
 const qText = (x, lang = LANG) => tr("q:" + x.id, "q", x.q, lang);
@@ -133,6 +160,10 @@ const expText = (x, lang = LANG) => tr("e:" + x.id, "e", x.e, lang, "es");
 // Static texts in index.html carry their English version in data-en; the Spanish one is kept on first switch.
 function applyStaticLang() {
   document.documentElement.lang = LANG;
+  document.title = CERT.title;
+  $("#certTitle").textContent = CERT.title;
+  $("#certEyebrow").textContent = CERT.eyebrow;
+  $("#facts").replaceChildren(...CERT.facts.map(f => el("span", { text: f[LANG === "es" ? 0 : 1] })), $("#bankSize"));
   document.querySelectorAll("[data-en]").forEach(n => {
     if (n.dataset.es == null) n.dataset.es = n.innerHTML;
     n.innerHTML = LANG === "en" ? n.dataset.en : n.dataset.es;
@@ -183,11 +214,29 @@ function renderStatus() {
 // ---------------- routing ----------------
 const VIEWS = ["practicar", "simulacro", "falladas", "temario", "glosario", "progreso"];
 let current = "practicar";
-function go(view, opts = {}) { current = view; render(); if (opts.scrollTo) requestAnimationFrame(() => { const n = document.getElementById(opts.scrollTo); if (n) { n.scrollIntoView({ block: "start" }); n.classList.add("hl"); } }); else window.scrollTo(0, 0); }
+// Every navigation is a history entry, so the back gesture/button returns to the previous screen and scroll position.
+function go(view, opts = {}) {
+  history.replaceState({ ...(history.state || {}), view: current, y: window.scrollY }, "", "#" + current);
+  const same = view === current && !opts.scrollTo;
+  current = view;
+  (same ? history.replaceState : history.pushState).call(history, { view, y: 0, scrollTo: opts.scrollTo || null }, "", "#" + view);
+  render();
+  restoreScroll(history.state);
+}
+function restoreScroll(st) {  // runs right after render(): the new DOM is already in place
+  const n = st && st.scrollTo && document.getElementById(st.scrollTo);
+  if (n) { n.scrollIntoView({ block: "start" }); n.classList.add("flash-target"); setTimeout(() => n.classList.remove("flash-target"), 1600); }
+  else window.scrollTo(0, (st && st.y) || 0);
+}
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+window.addEventListener("popstate", e => {
+  if (!e.state || !VIEWS.includes(e.state.view)) return;
+  current = e.state.view; render(); restoreScroll(e.state);
+});
 function render() {
   renderStatus();
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.view === current)));
-  if (location.hash !== "#" + current) history.replaceState(null, "", "#" + current);
+  if (!history.state) history.replaceState({ view: current, y: 0 }, "", "#" + current);
   const v = $("#view"); v.replaceChildren();
   ({ practicar: viewPractice, simulacro: viewExam, falladas: viewReview, temario: viewSyllabus, glosario: viewCards, progreso: viewProgress })[current](v);
 }
@@ -217,7 +266,7 @@ function questionCard(item, o) {
       el("p", { class: "etext", text: expText(x) }),
       el("p", { class: "note" },
         el("a", { href: "#temario", onclick: ev => { ev.preventDefault(); openLO(x.sec); } }, L("Estudia esto: ") + x.lo + " " + (info.title || "")),
-        " · ", ext(SYLLABUS_URL, L("Syllabus v4.0.1, pág. ") + x.page))));
+        " · ", ext(SYLLABUS_URL, SYL_PAGE() + x.page))));
   }
   // Shows this one question in the other language without switching the whole app.
   let flipped = false;
@@ -236,9 +285,9 @@ function openLO(sec) { openChapters.add(Number(sec[0])); go("temario", { scrollT
 
 // ---------------- practice ----------------
 let practice = null, practiceLO = null;
-function startPractice(pool, label) {
+function startPractice(pool, label, fromLO = null) {
   const ranked = shuffle(pool).sort((a, b) => qs(a.id).box - qs(b.id).box);
-  practice = { items: ranked.slice(0, 10).map(prepare), i: 0, chosen: null, right: 0, label };
+  practice = { items: ranked.slice(0, 10).map(prepare), i: 0, chosen: null, right: 0, label, fromLO };
   go("practicar");
 }
 function viewPractice(v) {
@@ -247,7 +296,7 @@ function viewPractice(v) {
   v.append(el("div", { class: "row spread" }, el("h2", { text: L("Práctica por capítulos") }), el("span", { class: "muted", text: L("Tandas de 10, primero lo que no dominas") })));
   v.append(el("p", { class: "note", style: "margin-top:6px", text: L("Toca un capítulo para practicarlo") }));
   const grid = el("div", { class: "chapters", style: "margin-top:12px" });
-  for (const ch of [1, 2, 3, 4, 5, 6]) {
+  for (const ch of CERT.chapters) {
     const list = Q.filter(x => x.ch === ch), m = mastery(list), name = tr("ch:" + ch, "title", CHAPTER_NAMES[ch]);
     const n = EXAM.groups.filter(g => g.ch === ch).reduce((s, g) => s + g.n, 0);
     grid.append(el("button", { class: "chap", type: "button", onclick: () => startPractice(list, L("Capítulo ") + ch + ". " + name) },
@@ -261,6 +310,7 @@ function viewPractice(v) {
 }
 function practiceRun(v) {
   const it = practice.items[practice.i], reveal = practice.chosen != null;
+  if (practice.fromLO) v.append(el("button", { class: "btn small", type: "button", style: "margin-bottom:8px", onclick: () => openLO(practice.fromLO) }, L("← Volver al temario: ") + CERT.loPrefix + practice.fromLO));
   if (practice.label) v.append(el("p", { class: "eyebrow", style: "margin-bottom:8px", text: practice.label }));
   v.append(questionCard(it, { counter: (practice.i + 1) + " / " + practice.items.length, chosen: practice.chosen, reveal,
     onPick: pos => { practice.chosen = pos; const ok = pos === it.correct; if (ok) practice.right++; record(it.id, ok); save(); render(); } }));
@@ -313,6 +363,11 @@ function startTick() {
 }
 const fmt = ms => String(Math.floor(ms / 60000)).padStart(2, "0") + ":" + String(Math.floor(ms / 1000) % 60).padStart(2, "0");
 function viewExam(v) {
+  if (!CERT.examReady) {
+    v.append(el("h2", { text: L("Simulacro de examen") }));
+    v.append(el("p", { class: "muted", style: "margin-top:6px", text: L("El simulacro estará disponible cuando estén todos los capítulos. Mientras, practica por capítulos en la pestaña Practicar.") }));
+    return;
+  }
   if (!exam) {
     v.append(el("h2", { text: L("Simulacro de examen") }));
     v.append(el("p", { class: "muted", style: "margin-top:6px", text: L("40 preguntas repartidas exactamente como el examen oficial: por capítulo (8 · 6 · 4 · 11 · 9 · 2), por grupo de objetivos y por nivel K (8 K1 · 24 K2 · 8 K3). Primero salen las preguntas que menos has visto en simulacros. No verás si aciertas hasta entregar. Cada pregunta vale 1 punto y se aprueba con 26.") }));
@@ -356,11 +411,11 @@ function finishExam(timeout) {
   if (timeout) toast("Se acabó el tiempo: el simulacro se ha corregido automáticamente.");
 }
 function examResult(v) {
-  const pass = exam.score >= 26;
+  const pass = exam.score >= CERT.pass;
   v.append(el("div", { class: "score " + (pass ? "pass" : "fail") }, el("span", { class: "eyebrow", text: L("Resultado del simulacro") }), el("span", { class: "big mono", text: exam.score + "/40" }), el("p", { text: pass ? L("Aprobado (26 o más).") : L("Suspenso: faltan ") + (26 - exam.score) + L(" para el 26.") })));
   const t1 = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: L("Capítulo") }), el("th", { class: "num", text: L("Aciertos") }))));
   const b1 = el("tbody");
-  for (const c of [1, 2, 3, 4, 5, 6]) { const r = exam.ch[c] || [0, 0]; b1.append(el("tr", {}, el("td", { text: c + ". " + CHAPTER_NAMES[c] }), el("td", { class: "num", text: r[0] + "/" + r[1] }))); }
+  for (const c of CERT.chapters) { const r = exam.ch[c] || [0, 0]; b1.append(el("tr", {}, el("td", { text: c + ". " + CHAPTER_NAMES[c] }), el("td", { class: "num", text: r[0] + "/" + r[1] }))); }
   t1.append(b1);
   const t2 = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: L("Nivel K") }), el("th", { class: "num", text: L("Aciertos") }))));
   const b2 = el("tbody");
@@ -426,14 +481,14 @@ function viewSyllabus(v) {
       for (const lo of s.los) {
         const qlist = Q.filter(x => x.sec === lo.lo);
         const node = el("article", { class: "lo", id: "lo-" + lo.lo },
-          el("div", { class: "row" }, el("span", { class: "badge" + (lo.k === 3 ? " k3" : ""), text: "FL-" + lo.lo + " · K" + lo.k }), el("strong", { text: tr("lo:" + lo.lo, "title", lo.title) })),
-          el("p", { class: "note", text: "LO: " + tr("lo:" + lo.lo, "stmt", lo.stmt) + L(" · Syllabus v4.0.1, pág. ") + LO_PAGE(lo.lo) }),
+          el("div", { class: "row" }, el("span", { class: "badge" + (lo.k === 3 ? " k3" : ""), text: CERT.loPrefix + lo.lo + " · K" + lo.k }), el("strong", { text: tr("lo:" + lo.lo, "title", lo.title) })),
+          el("p", { class: "note", text: "LO: " + tr("lo:" + lo.lo, "stmt", lo.stmt) + SYL_PAGE(" · ") + LO_PAGE(lo.lo) }),
           el("p", { text: tr("lonote:" + lo.lo, "sum", lo.sum, LANG, "es") }),
           el("div", { class: "terms" }, lo.terms.map(t => el("a", { href: GLOSSARY_URL(t), target: "_blank", rel: "noopener", title: L("Abrir en el glosario oficial") }, t))));
         const ex = lo.example && tr("lonote:" + lo.lo, "example", lo.example, LANG, "es");
         if (ex) node.append(el("div", { class: "example" }, el("strong", { text: ex.title }), el("p", { text: ex.problem }), el("ol", {}, ex.steps.map(s2 => el("li", { text: s2 })))));
         node.append(el("div", { class: "row" },
-          el("button", { class: "btn small primary", type: "button", onclick: () => startPractice(qlist, L("Practicando FL-") + lo.lo + " " + lo.title) }, L("Practicar (") + qlist.length + ")"),
+          el("button", { class: "btn small primary", type: "button", onclick: () => startPractice(qlist, L("Practicando ") + CERT.loPrefix + lo.lo + " " + tr("lo:" + lo.lo, "title", lo.title), lo.lo) }, L("Practicar (") + qlist.length + ")"),
           el("span", { class: "note", text: L("Dominio ") + mastery(qlist) + " %" })));
         body.append(node);
       }
@@ -464,14 +519,14 @@ function viewDictionary(v) {
   const draw = () => {
     const needle = glossQuery.trim().toLowerCase();
     list.replaceChildren();
-    for (const ch of [0, 1, 2, 3, 4, 5, 6, 7]) {
+    for (const ch of [0, ...CERT.chapters, 7]) {
       const items = GLOSS.filter(g => g.ch === ch).map(g => ({ g, t: es ? g.es : (I18N["gl:" + g.term] || {}).t || g.es }))
         .filter(({ g, t }) => !needle || (g.term + " " + t.def).toLowerCase().includes(needle));
       if (!items.length) continue;
       list.append(el("h3", { text: GLOSS_CH[ch] ? GLOSS_CH[ch][es ? 0 : 1] : ch + ". " + tr("ch:" + ch, "title", CHAPTER_NAMES[ch]) }));
       for (const { g, t } of items) {
         const node = el("article", { class: "lo gloss" },
-          el("div", { class: "row spread" }, el("strong", { text: g.term }), g.ch >= 1 && g.ch <= 6 ? ext(GLOSSARY_URL(g.term), es ? "Glosario oficial ↗" : "Official glossary ↗") : ""),
+          el("div", { class: "row spread" }, el("strong", { text: g.term }), (g.official ?? (g.ch >= 1 && g.ch <= 6)) ? ext(GLOSSARY_URL(g.term), es ? "Glosario oficial ↗" : "Official glossary ↗") : ""),
           el("p", { text: t.def }),
           el("p", { class: "note" }, el("strong", { text: es ? "En tu trabajo: " : "In your work: " }), ...withCode(t.work)));
         if (g.code) node.append(el("pre", { class: "code" }, g.code));
@@ -506,7 +561,7 @@ function viewProgress(v) {
   v.append(el("h2", { text: L("Progreso") }));
   const t = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: L("Capítulo") }), el("th", { class: "num", text: L("Vistas") }), el("th", { class: "num", text: L("Acierto") }), el("th", { class: "num", text: L("Dominio") }))));
   const tb = el("tbody");
-  for (const ch of [1, 2, 3, 4, 5, 6]) {
+  for (const ch of CERT.chapters) {
     const list = Q.filter(x => x.ch === ch), seen = list.filter(x => P.q[x.id]).length;
     const c = list.reduce((s, x) => s + qs(x.id).c, 0), w = list.reduce((s, x) => s + qs(x.id).w, 0);
     tb.append(el("tr", {}, el("td", { text: ch + ". " + CHAPTER_NAMES[ch] }), el("td", { class: "num", text: seen + "/" + list.length }), el("td", { class: "num", text: c + w ? Math.round(100 * c / (c + w)) + " %" : "—" }), el("td", { class: "num", text: mastery(list) + " %" })));
@@ -556,6 +611,14 @@ function viewProgress(v) {
 
 // ---------------- boot ----------------
 document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => { resetArmed = false; go(b.dataset.view); }));
+document.querySelectorAll("#certToggle button").forEach(b => {
+  b.setAttribute("aria-pressed", String(b.dataset.cert === CERT.id));
+  b.addEventListener("click", () => {
+    if (b.dataset.cert === CERT.id) return;
+    try { localStorage.setItem("study-cert", b.dataset.cert); } catch (e) { /* ignore */ }
+    location.hash = ""; location.reload();
+  });
+});
 applyStaticLang();
 document.querySelectorAll("#langToggle button").forEach(b => {
   b.setAttribute("aria-pressed", String(b.dataset.lang === LANG));

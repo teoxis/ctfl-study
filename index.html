@@ -21,9 +21,14 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <span class="eyebrow">ISTQB® Certified Tester Foundation Level · Syllabus v4.0.1</span>
-    <h1>Banco CTFL</h1>
-    <div class="facts"><span data-en="40 questions · 1 point">40 preguntas · 1 punto</span><span data-en="60 min (75 non-native)">60 min (75 no nativos)</span><span data-en="Pass mark: 26/40">Aprobado: 26/40</span><span id="bankSize">Cargando banco…</span></div>
+    <div class="row spread">
+      <span class="eyebrow" id="certEyebrow">ISTQB® Certified Tester Foundation Level · Syllabus v4.0.1</span>
+      <div class="certtoggle" id="certToggle" role="group" aria-label="Certificación / Certification">
+        <button type="button" data-cert="ctfl" aria-pressed="true">CTFL</button><button type="button" data-cert="ctai" aria-pressed="false">CT-AI</button>
+      </div>
+    </div>
+    <h1 id="certTitle">Banco CTFL</h1>
+    <div class="facts" id="facts"><span>40 preguntas · 1 punto</span><span>60 min (75 no nativos)</span><span>Aprobado: 26/40</span><span id="bankSize">Cargando banco…</span></div>
     <div class="status">
       <span class="chip" id="masteryChip">Dominio: —</span>
       <span class="chip" id="bestChip">Sin simulacros</span>
@@ -43,7 +48,7 @@
   <main id="view" aria-live="polite"><p class="empty">Cargando preguntas…</p></main>
 
   <footer class="foot">
-    <p data-en="&lt;strong&gt;Unofficial&lt;/strong&gt; study material. Original questions, written and checked against the CTFL v4.0.1 Syllabus. They are not exam questions or questions from the ISTQB Sample Exams.">Material de estudio <strong>no oficial</strong>. Preguntas propias, escritas y revisadas contra el Syllabus CTFL v4.0.1. No son preguntas del examen ni de los Sample Exams de ISTQB.</p>
+    <p data-en="&lt;strong&gt;Unofficial&lt;/strong&gt; study material. Original questions, written and checked against the official syllabus. They are not exam questions or questions from the ISTQB Sample Exams.">Material de estudio <strong>no oficial</strong>. Preguntas propias, escritas y revisadas contra el syllabus oficial. No son preguntas del examen ni de los Sample Exams de ISTQB.</p>
     <p>ISTQB® is a registered trademark of the International Software Testing Qualifications Board.</p>
     <p data-en="&lt;a href=&quot;https://github.com/teoxis/ctfl-study&quot; rel=&quot;noopener&quot;&gt;Source code&lt;/a&gt; · Your progress is saved only on this device (use Progress → Backup and sync to move it to another one)."><a href="https://github.com/teoxis/ctfl-study" rel="noopener">Código fuente</a> · Tu progreso se guarda solo en este dispositivo (usa Progreso → Copia de seguridad para pasarlo a otro).</p>
   </footer>
