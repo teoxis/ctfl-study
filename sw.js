@@ -1,6 +1,6 @@
 /* Service worker: precaches the app and the question bank (cache-first), so the app works offline.
    Bump VERSION whenever any file changes; the page then offers "Actualizar". */
-const VERSION = "ctfl-study-v1.1.0";
+const VERSION = "ctfl-study-v1.2.0";
 const FONT_CACHE = "ctfl-study-fonts";
 const ASSETS = [
   "./", "index.html", "styles.css", "app.js", "manifest.webmanifest",

@@ -123,14 +123,25 @@ async function loadData() {
 // Originals: question + options in English, explanations and notes in Spanish. tr() picks the requested language.
 let LANG = "en";
 try { LANG = localStorage.getItem("ctfl-lang") === "es" ? "es" : "en"; } catch (e) { /* storage blocked: default */ }
+// Interface strings are written in Spanish; UI_EN holds their English version.
+const UI_EN = {"Sample Exam A · preguntas": "Sample Exam A · questions","Sample Exam B · preguntas": "Sample Exam B · questions","Sample Exam C · preguntas": "Sample Exam C · questions","Sample Exam D · preguntas": "Sample Exam D · questions","Sample Exam A · respuestas": "Sample Exam A · answers","Sample Exam B · respuestas": "Sample Exam B · answers","Sample Exam C · respuestas": "Sample Exam C · answers","Sample Exam D · respuestas": "Sample Exam D · answers","Exam Structures & Rules Tables (reparto por LO)": "Exam Structures & Rules Tables (split by LO)","No se puede guardar en este navegador (¿modo privado?). Exporta tu progreso antes de cerrar.": "This browser cannot save (private mode?). Export your progress before closing.","El código no tiene el formato esperado (debe empezar por CTFL1: o CTFL0:).": "The code is not in the expected format (it must start with CTFL1: or CTFL0:).","Este navegador no puede descomprimir el código. Usa la copia en fichero .json.": "This browser cannot decompress the code. Use the .json backup file instead."," preguntas en el banco": " questions in the bank","Dominio global: ": "Overall mastery: ","Sin simulacros todavía": "No mock exams yet","Mejor simulacro: ": "Best mock exam: ","Cap. ": "Ch. ","Correcta": "Correct","Incorrecta · correcta: ": "Incorrect · correct: ","Sin responder · correcta: ": "Not answered · correct: ","Estudia esto: ": "Study this: ","Syllabus v4.0.1, pág. ": "Syllabus v4.0.1, p. ","Pregunta": "Question","Opciones": "Options","Original": "Original","Práctica por capítulos": "Practice by chapter","Tandas de 10, primero lo que no dominas": "Sets of 10, weakest questions first"," preguntas · ": " questions · "," en examen": " in the exam","Capítulos ": "Chapters ","¿Quieres practicar un objetivo concreto? Ve a Temario y pulsa «Practicar» en cualquier LO.": "Want to practise one learning objective? Go to Syllabus and tap \"Practise\" on any LO.","Terminar": "Finish","Siguiente": "Next","Ver resultado": "See result","Elige una respuesta": "Choose an answer","Tanda terminada": "Set finished","Otra tanda": "Another set","Por encima del 65 % que exige el examen.": "Above the 65% the exam requires.","Por debajo del 65 %. Las falladas pasan a la pestaña Falladas.": "Below 65%. Wrong answers go to the Mistakes tab.","Simulacro de examen": "Mock exam","40 preguntas repartidas exactamente como el examen oficial: por capítulo (8 · 6 · 4 · 11 · 9 · 2), por grupo de objetivos y por nivel K (8 K1 · 24 K2 · 8 K3). Primero salen las preguntas que menos has visto en simulacros. No verás si aciertas hasta entregar. Cada pregunta vale 1 punto y se aprueba con 26.": "40 questions split exactly like the official exam: by chapter (8 · 6 · 4 · 11 · 9 · 2), by objective group and by K-level (8 K1 · 24 K2 · 8 K3). Questions you have seen least in mock exams come first. You will not see whether you are right until you submit. Each question is worth 1 point and the pass mark is 26.","Duración": "Duration","75 min (no nativo, +25 %)": "75 min (non-native, +25%)","60 min (estándar)": "60 min (standard)","Empezar simulacro": "Start mock exam","Navegador de preguntas": "Question navigator","/40 respondidas": "/40 answered","Pregunta ": "Question ","Anterior": "Previous","Quitar marca": "Unflag","Marcar": "Flag","Confirmar entrega": "Confirm submission","Entregar": "Submit","Quedan ": "Remaining: "," sin responder. Pulsa «Confirmar entrega» para corregir.": " unanswered. Tap \"Confirm submission\" to grade.","Abandonar simulacro": "Abandon mock exam","Pulsa otra vez para abandonar sin guardar": "Tap again to abandon without saving","Se acabó el tiempo: el simulacro se ha corregido automáticamente.": "Time is up: the mock exam was graded automatically.","Resultado del simulacro": "Mock exam result","Aprobado (26 o más).": "Pass (26 or more).","Suspenso: faltan ": "Fail: "," para el 26.": " short of 26.","Capítulo": "Chapter","Aciertos": "Correct","Nivel K": "K-level"," · recordar": " · remember"," · comprender": " · understand"," · aplicar": " · apply","Revisión pregunta a pregunta": "Question-by-question review","Cerrar simulacro": "Close mock exam","Fecha": "Date","Nota": "Score","Aprobado": "Pass","Suspenso": "Fail","Últimos simulacros": "Recent mock exams","Preguntas falladas": "Mistakes","No tienes preguntas pendientes. Cuando falles una en Práctica o en un simulacro, aparecerá aquí hasta que la aciertes dos veces seguidas.": "No questions pending. When you miss one in Practice or in a mock exam, it shows up here until you get it right twice in a row."," pendientes. Una pregunta sale de aquí cuando la aciertas dos veces seguidas.": " pending. A question leaves this list when you get it right twice in a row.","Repasar ": "Review ","Temario": "Syllabus","Resúmenes propios por objetivo de aprendizaje": "Own summaries per learning objective","Materiales oficiales (gratis, istqb.org)": "Official materials (free, istqb.org)","Estudia con el syllabus oficial delante: cada objetivo indica su página. Los niveles K indican la profundidad: K1 recordar, K2 comprender, K3 aplicar.": "Study with the official syllabus open: each objective shows its page. K-levels give the depth: K1 remember, K2 understand, K3 apply.","Glosario oficial: ": "Official glossary: "," min · ": " min · ","pág. ": "p. "," · Syllabus v4.0.1, pág. ": " · Syllabus v4.0.1, p. ","Abrir en el glosario oficial": "Open in the official glossary","Practicar (": "Practise (","Dominio ": "Mastery ","Practicando FL-": "Practising FL-","Modo": "Mode","Glosario": "Glossary"," dominados": " mastered","Girar tarjeta": "Flip card","Término · toca para girar": "Term · tap to flip","Repasar otra vez": "Review again","Me lo sé": "I know it","Definición oficial ↗": "Official definition ↗","Progreso": "Progress","Dominio": "Mastery","Vistas": "Seen","Acierto": "Accuracy","Todas las K": "All K","Dominio: una pregunta cuenta como dominada cuando la aciertas tres veces seguidas; si la fallas, vuelve a cero.": "Mastery: a question counts as mastered when you get it right three times in a row; if you miss it, it goes back to zero.","Código de progreso": "Progress code","Aquí aparecerá tu código, o pega aquí el código del otro dispositivo.": "Your code appears here, or paste the code from your other device.","No se pudo leer el fichero: ": "Could not read the file: ","Copia de seguridad y sincronización": "Backup and sync","Tu progreso solo vive en este navegador. Para pasarlo al móvil (o al revés): «Copiar progreso» aquí, y «Pegar y fusionar» en el otro dispositivo. Al fusionar se conserva, para cada pregunta, la respuesta más reciente, y se juntan los simulacros de los dos.": "Your progress lives only in this browser. To move it to your phone (or back): \"Copy progress\" here, then \"Paste and merge\" on the other device. Merging keeps the most recent answer for each question and joins the mock exams from both.","Código copiado al portapapeles.": "Code copied to the clipboard.","Selecciona el texto y cópialo a mano.": "Select the text and copy it by hand.","Copiar progreso": "Copy progress","Pega primero el código del otro dispositivo en el cuadro.": "First paste the code from the other device into the box.","Progreso fusionado.": "Progress merged.","Código no válido.": "Invalid code.","Pegar y fusionar": "Paste and merge","Descargar copia (.json)": "Download backup (.json)","Copia importada y fusionada.": "Backup imported and merged.","Importar copia (.json)": "Import backup (.json)","Progreso borrado.": "Progress deleted.","Pulsa otra vez para borrar todo el progreso": "Tap again to delete all progress","Borrar progreso": "Delete progress","No se pudo cargar el banco de preguntas. Comprueba la conexión la primera vez que abras la app; después funciona sin conexión.": "Could not load the question bank. Check your connection the first time you open the app; after that it works offline.","Hay una versión nueva del banco.": "A new version is available.","Actualizar": "Update","Capítulo ": "Chapter ","Toca un capítulo para practicarlo": "Tap a chapter to practise it","Tanda mixta (todos los capítulos)": "Mixed set (all chapters)"};
+const L = es => (LANG === "en" && UI_EN[es] != null) ? UI_EN[es] : es;
 const tr = (key, field, original, lang = LANG, native = "en") => (lang !== native && I18N[key] && I18N[key].t[field] != null) ? I18N[key].t[field] : original;
 const qText = (x, lang = LANG) => tr("q:" + x.id, "q", x.q, lang);
 const optText = (x, i, lang = LANG) => { const o = tr("q:" + x.id, "o", null, lang); return o ? o[i] : x.o[i]; };
 const expText = (x, lang = LANG) => tr("e:" + x.id, "e", x.e, lang, "es");
+// Static texts in index.html carry their English version in data-en; the Spanish one is kept on first switch.
+function applyStaticLang() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-en]").forEach(n => {
+    if (n.dataset.es == null) n.dataset.es = n.innerHTML;
+    n.innerHTML = LANG === "en" ? n.dataset.en : n.dataset.es;
+  });
+}
 function setLang(l) {
   LANG = l;
   try { localStorage.setItem("ctfl-lang", l); } catch (e) { /* ignore */ }
-  document.documentElement.lang = l;
+  applyStaticLang();
   document.querySelectorAll("#langToggle button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
   render();
 }
@@ -163,10 +174,10 @@ function toast(msg, action) {
 
 // ---------------- header ----------------
 function renderStatus() {
-  $("#bankSize").textContent = Q.length + " preguntas en el banco";
-  $("#masteryChip").textContent = "Dominio global: " + mastery(Q) + " %";
+  $("#bankSize").textContent = Q.length + L(" preguntas en el banco");
+  $("#masteryChip").textContent = L("Dominio global: ") + mastery(Q) + " %";
   const best = P.exams.reduce((m, e) => Math.max(m, e.score), -1);
-  $("#bestChip").textContent = best < 0 ? "Sin simulacros todavía" : "Mejor simulacro: " + best + "/40";
+  $("#bestChip").textContent = best < 0 ? L("Sin simulacros todavía") : L("Mejor simulacro: ") + best + "/40";
 }
 
 // ---------------- routing ----------------
@@ -184,14 +195,14 @@ function render() {
 // ---------------- question card ----------------
 function questionCard(item, o) {
   const x = QBY[item.id], info = LO_INFO[x.sec] || {};
-  const card = el("section", { class: "qcard", "aria-label": "Pregunta" });
+  const card = el("section", { class: "qcard", "aria-label": L("Pregunta") });
   card.append(el("div", { class: "qhead" },
-    el("span", { class: "row" }, el("span", { class: "badge" + (x.k === 3 ? " k3" : ""), text: x.lo + " · K" + x.k }), el("span", { class: "eyebrow", text: "Cap. " + x.ch })),
+    el("span", { class: "row" }, el("span", { class: "badge" + (x.k === 3 ? " k3" : ""), text: x.lo + " · K" + x.k }), el("span", { class: "eyebrow", text: L("Cap. ") + x.ch })),
     el("span", { class: "eyebrow mono", text: o.counter || x.id })));
   const stem = el("p", { class: "stem", text: qText(x) });
   card.append(stem);
   if (x.code) card.append(el("pre", { class: "code" }, x.code));
-  const box = el("div", { class: "opts", role: "radiogroup", "aria-label": "Opciones" });
+  const box = el("div", { class: "opts", role: "radiogroup", "aria-label": L("Opciones") });
   item.order.forEach((oi, pos) => {
     const b = el("button", { class: "opt", role: "radio", type: "button", "aria-checked": String(o.chosen === pos) }, el("span", { class: "k", text: LETTERS[pos] }), el("span", { class: "otext", "data-oi": oi, text: optText(x, oi) }));
     if (o.reveal) { b.disabled = true; if (pos === item.correct) b.classList.add("right"); else if (pos === o.chosen) b.classList.add("wrong"); }
@@ -202,11 +213,11 @@ function questionCard(item, o) {
   if (o.reveal) {
     const ok = o.chosen === item.correct;
     card.append(el("div", { class: "explain" + (ok ? "" : " bad") },
-      el("span", { class: "verdict " + (ok ? "good" : "bad"), text: o.chosen == null ? "Sin responder · correcta: " + LETTERS[item.correct] : ok ? "Correcta" : "Incorrecta · correcta: " + LETTERS[item.correct] }),
+      el("span", { class: "verdict " + (ok ? "good" : "bad"), text: o.chosen == null ? L("Sin responder · correcta: ") + LETTERS[item.correct] : ok ? L("Correcta") : L("Incorrecta · correcta: ") + LETTERS[item.correct] }),
       el("p", { class: "etext", text: expText(x) }),
       el("p", { class: "note" },
-        el("a", { href: "#temario", onclick: ev => { ev.preventDefault(); openLO(x.sec); } }, "Estudia esto: " + x.lo + " " + (info.title || "")),
-        " · ", ext(SYLLABUS_URL, "Syllabus v4.0.1, pág. " + x.page))));
+        el("a", { href: "#temario", onclick: ev => { ev.preventDefault(); openLO(x.sec); } }, L("Estudia esto: ") + x.lo + " " + (info.title || "")),
+        " · ", ext(SYLLABUS_URL, L("Syllabus v4.0.1, pág. ") + x.page))));
   }
   // Shows this one question in the other language without switching the whole app.
   let flipped = false;
@@ -216,7 +227,7 @@ function questionCard(item, o) {
     stem.textContent = qText(x, l);
     card.querySelectorAll(".otext").forEach(s => { s.textContent = optText(x, Number(s.dataset.oi), l); });
     const e = card.querySelector(".etext"); if (e) e.textContent = expText(x, l);
-    ev.currentTarget.textContent = flipped ? "Original" : (LANG === "en" ? "Ver en ES" : "See in EN");
+    ev.currentTarget.textContent = flipped ? L("Original") : (LANG === "en" ? "Ver en ES" : "See in EN");
   } }, LANG === "en" ? "Ver en ES" : "See in EN"));
   return card;
 }
@@ -224,7 +235,7 @@ let openChapters = new Set();
 function openLO(sec) { openChapters.add(Number(sec[0])); go("temario", { scrollTo: "lo-" + sec }); }
 
 // ---------------- practice ----------------
-let practice = null, selectedCh = new Set([1, 2, 3, 4, 5, 6]), practiceLO = null;
+let practice = null, practiceLO = null;
 function startPractice(pool, label) {
   const ranked = shuffle(pool).sort((a, b) => qs(a.id).box - qs(b.id).box);
   practice = { items: ranked.slice(0, 10).map(prepare), i: 0, chosen: null, right: 0, label };
@@ -233,21 +244,20 @@ function startPractice(pool, label) {
 function viewPractice(v) {
   if (practice && practice.i < practice.items.length) return practiceRun(v);
   if (practice) return practiceDone(v);
-  v.append(el("div", { class: "row spread" }, el("h2", { text: "Práctica por capítulos" }), el("span", { class: "muted", text: "Tandas de 10, primero lo que no dominas" })));
+  v.append(el("div", { class: "row spread" }, el("h2", { text: L("Práctica por capítulos") }), el("span", { class: "muted", text: L("Tandas de 10, primero lo que no dominas") })));
+  v.append(el("p", { class: "note", style: "margin-top:6px", text: L("Toca un capítulo para practicarlo") }));
   const grid = el("div", { class: "chapters", style: "margin-top:12px" });
   for (const ch of [1, 2, 3, 4, 5, 6]) {
-    const list = Q.filter(x => x.ch === ch), m = mastery(list);
+    const list = Q.filter(x => x.ch === ch), m = mastery(list), name = tr("ch:" + ch, "title", CHAPTER_NAMES[ch]);
     const n = EXAM.groups.filter(g => g.ch === ch).reduce((s, g) => s + g.n, 0);
-    grid.append(el("button", { class: "chap", type: "button", "aria-pressed": String(selectedCh.has(ch)), onclick: () => { selectedCh.has(ch) ? selectedCh.delete(ch) : selectedCh.add(ch); render(); } },
-      el("span", { class: "name", text: ch + ". " + tr("ch:" + ch, "title", CHAPTER_NAMES[ch]) }),
+    grid.append(el("button", { class: "chap", type: "button", onclick: () => startPractice(list, L("Capítulo ") + ch + ". " + name) },
+      el("span", { class: "name", text: ch + ". " + name }),
       el("div", { class: "bar", "aria-hidden": "true" }, el("i", { style: "width:" + m + "%" })),
-      el("span", { class: "meta" }, el("span", { text: list.length + " preguntas · " + n + " en examen" }), el("span", { text: m + " %" }))));
+      el("span", { class: "meta" }, el("span", { text: list.length + L(" preguntas · ") + n + L(" en examen") }), el("span", { text: m + " %" }))));
   }
   v.append(grid);
-  const b = el("button", { class: "btn primary", type: "button", style: "margin-top:14px", onclick: () => startPractice(Q.filter(x => selectedCh.has(x.ch)), "Capítulos " + [...selectedCh].sort().join(", ")) }, "Empezar tanda");
-  b.disabled = !selectedCh.size;
-  v.append(b);
-  v.append(el("p", { class: "note", style: "margin-top:10px", text: "¿Quieres practicar un objetivo concreto? Ve a Temario y pulsa «Practicar» en cualquier LO." }));
+  v.append(el("button", { class: "btn primary", type: "button", style: "margin-top:14px", onclick: () => startPractice(Q, L("Tanda mixta (todos los capítulos)")) }, L("Tanda mixta (todos los capítulos)")));
+  v.append(el("p", { class: "note", style: "margin-top:10px", text: L("¿Quieres practicar un objetivo concreto? Ve a Temario y pulsa «Practicar» en cualquier LO.") }));
 }
 function practiceRun(v) {
   const it = practice.items[practice.i], reveal = practice.chosen != null;
@@ -255,13 +265,13 @@ function practiceRun(v) {
   v.append(questionCard(it, { counter: (practice.i + 1) + " / " + practice.items.length, chosen: practice.chosen, reveal,
     onPick: pos => { practice.chosen = pos; const ok = pos === it.correct; if (ok) practice.right++; record(it.id, ok); save(); render(); } }));
   v.append(el("div", { class: "row spread", style: "margin-top:12px" },
-    el("button", { class: "btn", type: "button", onclick: () => { practice = null; render(); } }, "Terminar"),
-    reveal ? el("button", { class: "btn primary", type: "button", onclick: () => { practice.i++; practice.chosen = null; render(); window.scrollTo(0, 0); } }, practice.i + 1 < practice.items.length ? "Siguiente" : "Ver resultado") : el("span", { class: "muted", text: "Elige una respuesta" })));
+    el("button", { class: "btn", type: "button", onclick: () => { practice = null; render(); } }, L("Terminar")),
+    reveal ? el("button", { class: "btn primary", type: "button", onclick: () => { practice.i++; practice.chosen = null; render(); window.scrollTo(0, 0); } }, practice.i + 1 < practice.items.length ? L("Siguiente") : L("Ver resultado")) : el("span", { class: "muted", text: L("Elige una respuesta") })));
 }
 function practiceDone(v) {
   const n = practice.items.length, r = practice.right, good = r / n >= 0.65;
-  v.append(el("div", { class: "score " + (good ? "pass" : "fail") }, el("span", { class: "eyebrow", text: "Tanda terminada" }), el("span", { class: "big mono", text: r + "/" + n }), el("p", { text: good ? "Por encima del 65 % que exige el examen." : "Por debajo del 65 %. Las falladas pasan a la pestaña Falladas." })));
-  v.append(el("div", { class: "row", style: "margin-top:12px" }, el("button", { class: "btn primary", type: "button", onclick: () => { practice = null; render(); } }, "Otra tanda")));
+  v.append(el("div", { class: "score " + (good ? "pass" : "fail") }, el("span", { class: "eyebrow", text: L("Tanda terminada") }), el("span", { class: "big mono", text: r + "/" + n }), el("p", { text: good ? L("Por encima del 65 % que exige el examen.") : L("Por debajo del 65 %. Las falladas pasan a la pestaña Falladas.") })));
+  v.append(el("div", { class: "row", style: "margin-top:12px" }, el("button", { class: "btn primary", type: "button", onclick: () => { practice = null; render(); } }, L("Otra tanda"))));
 }
 
 // ---------------- mock exam ----------------
@@ -304,29 +314,29 @@ function startTick() {
 const fmt = ms => String(Math.floor(ms / 60000)).padStart(2, "0") + ":" + String(Math.floor(ms / 1000) % 60).padStart(2, "0");
 function viewExam(v) {
   if (!exam) {
-    v.append(el("h2", { text: "Simulacro de examen" }));
-    v.append(el("p", { class: "muted", style: "margin-top:6px", text: "40 preguntas repartidas exactamente como el examen oficial: por capítulo (8 · 6 · 4 · 11 · 9 · 2), por grupo de objetivos y por nivel K (8 K1 · 24 K2 · 8 K3). Primero salen las preguntas que menos has visto en simulacros. No verás si aciertas hasta entregar. Cada pregunta vale 1 punto y se aprueba con 26." }));
-    const mins = el("select", { id: "examMins", class: "btn", "aria-label": "Duración" }, el("option", { value: "75" }, "75 min (no nativo, +25 %)"), el("option", { value: "60" }, "60 min (estándar)"));
-    v.append(el("div", { class: "row", style: "margin-top:14px" }, mins, el("button", { class: "btn primary", type: "button", onclick: () => startExam(Number(mins.value)) }, "Empezar simulacro")));
+    v.append(el("h2", { text: L("Simulacro de examen") }));
+    v.append(el("p", { class: "muted", style: "margin-top:6px", text: L("40 preguntas repartidas exactamente como el examen oficial: por capítulo (8 · 6 · 4 · 11 · 9 · 2), por grupo de objetivos y por nivel K (8 K1 · 24 K2 · 8 K3). Primero salen las preguntas que menos has visto en simulacros. No verás si aciertas hasta entregar. Cada pregunta vale 1 punto y se aprueba con 26.") }));
+    const mins = el("select", { id: "examMins", class: "btn", "aria-label": L("Duración") }, el("option", { value: "75" }, L("75 min (no nativo, +25 %)")), el("option", { value: "60" }, L("60 min (estándar)")));
+    v.append(el("div", { class: "row", style: "margin-top:14px" }, mins, el("button", { class: "btn primary", type: "button", onclick: () => startExam(Number(mins.value)) }, L("Empezar simulacro"))));
     if (P.exams.length) v.append(examHistory());
     return;
   }
   if (exam.done) return examResult(v);
   const left = Math.max(0, exam.end - Date.now());
-  v.append(el("div", { class: "row spread" }, el("span", { class: "timer" + (left < 300000 ? " low" : ""), id: "timer", text: fmt(left) }), el("span", { class: "muted mono", text: exam.answers.filter(a => a != null).length + "/40 respondidas" })));
-  const g = el("div", { class: "examgrid", style: "margin-top:10px", "aria-label": "Navegador de preguntas" });
-  exam.items.forEach((_, i) => g.append(el("button", { type: "button", class: [exam.answers[i] != null ? "done" : "", exam.flags[i] ? "flag" : "", i === exam.i ? "cur" : ""].join(" "), "aria-label": "Pregunta " + (i + 1), onclick: () => { exam.i = i; saveExam(); render(); } }, String(i + 1))));
+  v.append(el("div", { class: "row spread" }, el("span", { class: "timer" + (left < 300000 ? " low" : ""), id: "timer", text: fmt(left) }), el("span", { class: "muted mono", text: exam.answers.filter(a => a != null).length + L("/40 respondidas") })));
+  const g = el("div", { class: "examgrid", style: "margin-top:10px", "aria-label": L("Navegador de preguntas") });
+  exam.items.forEach((_, i) => g.append(el("button", { type: "button", class: [exam.answers[i] != null ? "done" : "", exam.flags[i] ? "flag" : "", i === exam.i ? "cur" : ""].join(" "), "aria-label": L("Pregunta ") + (i + 1), onclick: () => { exam.i = i; saveExam(); render(); } }, String(i + 1))));
   v.append(g);
   const card = questionCard(exam.items[exam.i], { counter: (exam.i + 1) + " / 40", chosen: exam.answers[exam.i], reveal: false, onPick: pos => { exam.answers[exam.i] = pos; exam.confirm = false; saveExam(); render(); } });
   card.style.marginTop = "12px"; v.append(card);
   v.append(el("div", { class: "row spread", style: "margin-top:12px" },
     el("div", { class: "row" },
-      el("button", { class: "btn", type: "button", disabled: exam.i === 0, onclick: () => { exam.i--; saveExam(); render(); } }, "Anterior"),
-      el("button", { class: "btn", type: "button", onclick: () => { exam.flags[exam.i] = !exam.flags[exam.i]; saveExam(); render(); } }, exam.flags[exam.i] ? "Quitar marca" : "Marcar"),
-      el("button", { class: "btn", type: "button", disabled: exam.i === 39, onclick: () => { exam.i++; saveExam(); render(); } }, "Siguiente")),
-    el("button", { class: "btn primary", type: "button", onclick: () => { if (exam.confirm) finishExam(false); else { exam.confirm = true; render(); } } }, exam.confirm ? "Confirmar entrega" : "Entregar")));
-  if (exam.confirm) v.append(el("p", { class: "muted", style: "margin-top:6px", text: "Quedan " + exam.answers.filter(a => a == null).length + " sin responder. Pulsa «Confirmar entrega» para corregir." }));
-  v.append(el("button", { class: "btn small danger", type: "button", style: "margin-top:16px", onclick: () => { if (exam.abandon) { exam = null; saveExam(); clearInterval(tick); render(); } else { exam.abandon = true; render(); } } }, exam.abandon ? "Pulsa otra vez para abandonar sin guardar" : "Abandonar simulacro"));
+      el("button", { class: "btn", type: "button", disabled: exam.i === 0, onclick: () => { exam.i--; saveExam(); render(); } }, L("Anterior")),
+      el("button", { class: "btn", type: "button", onclick: () => { exam.flags[exam.i] = !exam.flags[exam.i]; saveExam(); render(); } }, exam.flags[exam.i] ? L("Quitar marca") : L("Marcar")),
+      el("button", { class: "btn", type: "button", disabled: exam.i === 39, onclick: () => { exam.i++; saveExam(); render(); } }, L("Siguiente"))),
+    el("button", { class: "btn primary", type: "button", onclick: () => { if (exam.confirm) finishExam(false); else { exam.confirm = true; render(); } } }, exam.confirm ? L("Confirmar entrega") : L("Entregar"))));
+  if (exam.confirm) v.append(el("p", { class: "muted", style: "margin-top:6px", text: L("Quedan ") + exam.answers.filter(a => a == null).length + L(" sin responder. Pulsa «Confirmar entrega» para corregir.") }));
+  v.append(el("button", { class: "btn small danger", type: "button", style: "margin-top:16px", onclick: () => { if (exam.abandon) { exam = null; saveExam(); clearInterval(tick); render(); } else { exam.abandon = true; render(); } } }, exam.abandon ? L("Pulsa otra vez para abandonar sin guardar") : L("Abandonar simulacro")));
 }
 function finishExam(timeout) {
   clearInterval(tick);
@@ -347,35 +357,35 @@ function finishExam(timeout) {
 }
 function examResult(v) {
   const pass = exam.score >= 26;
-  v.append(el("div", { class: "score " + (pass ? "pass" : "fail") }, el("span", { class: "eyebrow", text: "Resultado del simulacro" }), el("span", { class: "big mono", text: exam.score + "/40" }), el("p", { text: pass ? "Aprobado (26 o más)." : "Suspenso: faltan " + (26 - exam.score) + " para el 26." })));
-  const t1 = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: "Capítulo" }), el("th", { class: "num", text: "Aciertos" }))));
+  v.append(el("div", { class: "score " + (pass ? "pass" : "fail") }, el("span", { class: "eyebrow", text: L("Resultado del simulacro") }), el("span", { class: "big mono", text: exam.score + "/40" }), el("p", { text: pass ? L("Aprobado (26 o más).") : L("Suspenso: faltan ") + (26 - exam.score) + L(" para el 26.") })));
+  const t1 = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: L("Capítulo") }), el("th", { class: "num", text: L("Aciertos") }))));
   const b1 = el("tbody");
   for (const c of [1, 2, 3, 4, 5, 6]) { const r = exam.ch[c] || [0, 0]; b1.append(el("tr", {}, el("td", { text: c + ". " + CHAPTER_NAMES[c] }), el("td", { class: "num", text: r[0] + "/" + r[1] }))); }
   t1.append(b1);
-  const t2 = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: "Nivel K" }), el("th", { class: "num", text: "Aciertos" }))));
+  const t2 = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: L("Nivel K") }), el("th", { class: "num", text: L("Aciertos") }))));
   const b2 = el("tbody");
-  for (const kk of [1, 2, 3]) { const r = exam.k[kk] || [0, 0]; b2.append(el("tr", {}, el("td", { text: "K" + kk + (kk === 1 ? " · recordar" : kk === 2 ? " · comprender" : " · aplicar") }), el("td", { class: "num", text: r[0] + "/" + r[1] }))); }
+  for (const kk of [1, 2, 3]) { const r = exam.k[kk] || [0, 0]; b2.append(el("tr", {}, el("td", { text: "K" + kk + (kk === 1 ? L(" · recordar") : kk === 2 ? L(" · comprender") : L(" · aplicar")) }), el("td", { class: "num", text: r[0] + "/" + r[1] }))); }
   t2.append(b2);
   v.append(el("div", { class: "stack", style: "margin-top:12px" }, el("div", { class: "tablebox" }, t1), el("div", { class: "tablebox" }, t2)));
-  v.append(el("h3", { text: "Revisión pregunta a pregunta", style: "margin-top:16px" }));
+  v.append(el("h3", { text: L("Revisión pregunta a pregunta"), style: "margin-top:16px" }));
   const g = el("div", { class: "examgrid", style: "margin-top:8px" });
-  exam.items.forEach((it, i) => g.append(el("button", { type: "button", class: (exam.answers[i] === it.correct ? "ok" : "ko") + (i === exam.i ? " cur" : ""), "aria-label": "Pregunta " + (i + 1), onclick: () => { exam.i = i; render(); } }, String(i + 1))));
+  exam.items.forEach((it, i) => g.append(el("button", { type: "button", class: (exam.answers[i] === it.correct ? "ok" : "ko") + (i === exam.i ? " cur" : ""), "aria-label": L("Pregunta ") + (i + 1), onclick: () => { exam.i = i; render(); } }, String(i + 1))));
   v.append(g);
   const card = questionCard(exam.items[exam.i], { counter: (exam.i + 1) + " / 40", chosen: exam.answers[exam.i], reveal: true });
   card.style.marginTop = "10px"; v.append(card);
   v.append(el("div", { class: "row spread", style: "margin-top:12px" },
-    el("div", { class: "row" }, el("button", { class: "btn", type: "button", disabled: exam.i === 0, onclick: () => { exam.i--; render(); } }, "Anterior"), el("button", { class: "btn", type: "button", disabled: exam.i === 39, onclick: () => { exam.i++; render(); } }, "Siguiente")),
-    el("button", { class: "btn primary", type: "button", onclick: () => { exam = null; saveExam(); render(); } }, "Cerrar simulacro")));
+    el("div", { class: "row" }, el("button", { class: "btn", type: "button", disabled: exam.i === 0, onclick: () => { exam.i--; render(); } }, L("Anterior")), el("button", { class: "btn", type: "button", disabled: exam.i === 39, onclick: () => { exam.i++; render(); } }, L("Siguiente"))),
+    el("button", { class: "btn primary", type: "button", onclick: () => { exam = null; saveExam(); render(); } }, L("Cerrar simulacro"))));
 }
 function examHistory() {
-  const t = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: "Fecha" }), el("th", { class: "num", text: "Nota" }), el("th", { class: "num", text: "K3" }), el("th", { class: "num", text: "Min" }), el("th", { text: "" }))));
+  const t = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: L("Fecha") }), el("th", { class: "num", text: L("Nota") }), el("th", { class: "num", text: "K3" }), el("th", { class: "num", text: "Min" }), el("th", { text: "" }))));
   const tb = el("tbody");
   P.exams.slice().reverse().slice(0, 12).forEach(e => {
     const k3 = e.k && e.k[3] ? e.k[3][0] + "/" + e.k[3][1] : "—";
-    tb.append(el("tr", {}, el("td", { text: new Date(e.at).toLocaleDateString("es-ES", { day: "2-digit", month: "short" }) }), el("td", { class: "num", text: e.score + "/40" }), el("td", { class: "num", text: k3 }), el("td", { class: "num", text: String(e.mins) }), el("td", { text: e.score >= 26 ? "Aprobado" : "Suspenso" })));
+    tb.append(el("tr", {}, el("td", { text: new Date(e.at).toLocaleDateString("es-ES", { day: "2-digit", month: "short" }) }), el("td", { class: "num", text: e.score + "/40" }), el("td", { class: "num", text: k3 }), el("td", { class: "num", text: String(e.mins) }), el("td", { text: e.score >= 26 ? L("Aprobado") : L("Suspenso") })));
   });
   t.append(tb);
-  return el("div", { class: "stack", style: "margin-top:20px" }, el("h3", { text: "Últimos simulacros" }), el("div", { class: "tablebox" }, t));
+  return el("div", { class: "stack", style: "margin-top:20px" }, el("h3", { text: L("Últimos simulacros") }), el("div", { class: "tablebox" }, t));
 }
 
 // ---------------- wrong answers ----------------
@@ -384,47 +394,47 @@ function viewReview(v) {
   const failed = Q.filter(x => { const s = P.q[x.id]; return s && s.w > 0 && s.box < 2; }).sort((a, b) => qs(a.id).box - qs(b.id).box || qs(b.id).w - qs(a.id).w);
   if (!review || review.i >= review.items.length) {
     review = null;
-    v.append(el("h2", { text: "Preguntas falladas" }));
-    if (!failed.length) { v.append(el("p", { class: "empty", style: "margin-top:10px", text: "No tienes preguntas pendientes. Cuando falles una en Práctica o en un simulacro, aparecerá aquí hasta que la aciertes dos veces seguidas." })); return; }
-    v.append(el("p", { class: "muted", style: "margin-top:6px", text: failed.length + " pendientes. Una pregunta sale de aquí cuando la aciertas dos veces seguidas." }));
-    v.append(el("button", { class: "btn primary", type: "button", style: "margin-top:12px", onclick: () => { review = { items: failed.slice(0, 15).map(prepare), i: 0, chosen: null }; render(); } }, "Repasar " + Math.min(15, failed.length)));
+    v.append(el("h2", { text: L("Preguntas falladas") }));
+    if (!failed.length) { v.append(el("p", { class: "empty", style: "margin-top:10px", text: L("No tienes preguntas pendientes. Cuando falles una en Práctica o en un simulacro, aparecerá aquí hasta que la aciertes dos veces seguidas.") })); return; }
+    v.append(el("p", { class: "muted", style: "margin-top:6px", text: failed.length + L(" pendientes. Una pregunta sale de aquí cuando la aciertas dos veces seguidas.") }));
+    v.append(el("button", { class: "btn primary", type: "button", style: "margin-top:12px", onclick: () => { review = { items: failed.slice(0, 15).map(prepare), i: 0, chosen: null }; render(); } }, L("Repasar ") + Math.min(15, failed.length)));
     return;
   }
   const it = review.items[review.i], reveal = review.chosen != null;
   v.append(questionCard(it, { counter: (review.i + 1) + " / " + review.items.length, chosen: review.chosen, reveal, onPick: pos => { review.chosen = pos; record(it.id, pos === it.correct); save(); render(); } }));
-  v.append(el("div", { class: "row spread", style: "margin-top:12px" }, el("button", { class: "btn", type: "button", onclick: () => { review = null; render(); } }, "Terminar"),
-    reveal ? el("button", { class: "btn primary", type: "button", onclick: () => { review.i++; review.chosen = null; render(); window.scrollTo(0, 0); } }, "Siguiente") : el("span", { class: "muted", text: "Elige una respuesta" })));
+  v.append(el("div", { class: "row spread", style: "margin-top:12px" }, el("button", { class: "btn", type: "button", onclick: () => { review = null; render(); } }, L("Terminar")),
+    reveal ? el("button", { class: "btn primary", type: "button", onclick: () => { review.i++; review.chosen = null; render(); window.scrollTo(0, 0); } }, L("Siguiente")) : el("span", { class: "muted", text: L("Elige una respuesta") })));
 }
 
 // ---------------- syllabus (temario) ----------------
 function viewSyllabus(v) {
-  v.append(el("div", { class: "row spread" }, el("h2", { text: "Temario" }), el("span", { class: "muted", text: "Resúmenes propios por objetivo de aprendizaje" })));
-  const off = el("section", { class: "panel official", style: "margin-top:12px" }, el("h3", { text: "Materiales oficiales (gratis, istqb.org)" }),
-    el("ul", {}, OFFICIAL.map(([t, id]) => el("li", {}, ext("https://istqb.org/?sdm_process_download=1&download_id=" + id, t)))),
-    el("p", { class: "note", text: "Estudia con el syllabus oficial delante: cada objetivo indica su página. Los niveles K indican la profundidad: K1 recordar, K2 comprender, K3 aplicar." }),
-    el("p", { class: "note" }, "Glosario oficial: ", ext("https://glossary.istqb.org/", "glossary.istqb.org")));
+  v.append(el("div", { class: "row spread" }, el("h2", { text: L("Temario") }), el("span", { class: "muted", text: L("Resúmenes propios por objetivo de aprendizaje") })));
+  const off = el("section", { class: "panel official", style: "margin-top:12px" }, el("h3", { text: L("Materiales oficiales (gratis, istqb.org)") }),
+    el("ul", {}, OFFICIAL.map(([t, id]) => el("li", {}, ext("https://istqb.org/?sdm_process_download=1&download_id=" + id, L(t))))),
+    el("p", { class: "note", text: L("Estudia con el syllabus oficial delante: cada objetivo indica su página. Los niveles K indican la profundidad: K1 recordar, K2 comprender, K3 aplicar.") }),
+    el("p", { class: "note" }, L("Glosario oficial: "), ext("https://glossary.istqb.org/", "glossary.istqb.org")));
   v.append(off);
   const wrap = el("div", { class: "stack", style: "margin-top:12px" });
   for (const ch of SYL.chapters) {
     const list = Q.filter(x => x.ch === ch.ch);
     const d = el("details", { class: "chapter", open: openChapters.has(ch.ch) });
     d.addEventListener("toggle", () => { d.open ? openChapters.add(ch.ch) : openChapters.delete(ch.ch); });
-    d.append(el("summary", {}, el("h3", { text: ch.ch + ". " + tr("ch:" + ch.ch, "title", ch.title) }), el("span", { class: "eyebrow", text: ch.minutes + " min · " + mastery(list) + " %" })));
+    d.append(el("summary", {}, el("h3", { text: ch.ch + ". " + tr("ch:" + ch.ch, "title", ch.title) }), el("span", { class: "eyebrow", text: ch.minutes + L(" min · ") + mastery(list) + " %" })));
     const body = el("div", { class: "chapbody" });
     for (const s of ch.sections) {
-      body.append(el("div", { class: "row spread" }, el("h3", { text: s.sec + " " + tr("sec:" + s.sec, "title", s.title) }), ext(SYLLABUS_URL, "pág. " + s.page)));
+      body.append(el("div", { class: "row spread" }, el("h3", { text: s.sec + " " + tr("sec:" + s.sec, "title", s.title) }), ext(SYLLABUS_URL, L("pág. ") + s.page)));
       for (const lo of s.los) {
         const qlist = Q.filter(x => x.sec === lo.lo);
         const node = el("article", { class: "lo", id: "lo-" + lo.lo },
           el("div", { class: "row" }, el("span", { class: "badge" + (lo.k === 3 ? " k3" : ""), text: "FL-" + lo.lo + " · K" + lo.k }), el("strong", { text: tr("lo:" + lo.lo, "title", lo.title) })),
-          el("p", { class: "note", text: "LO: " + tr("lo:" + lo.lo, "stmt", lo.stmt) + " · Syllabus v4.0.1, pág. " + LO_PAGE(lo.lo) }),
+          el("p", { class: "note", text: "LO: " + tr("lo:" + lo.lo, "stmt", lo.stmt) + L(" · Syllabus v4.0.1, pág. ") + LO_PAGE(lo.lo) }),
           el("p", { text: tr("lonote:" + lo.lo, "sum", lo.sum, LANG, "es") }),
-          el("div", { class: "terms" }, lo.terms.map(t => el("a", { href: GLOSSARY_URL(t), target: "_blank", rel: "noopener", title: "Abrir en el glosario oficial" }, t))));
+          el("div", { class: "terms" }, lo.terms.map(t => el("a", { href: GLOSSARY_URL(t), target: "_blank", rel: "noopener", title: L("Abrir en el glosario oficial") }, t))));
         const ex = lo.example && tr("lonote:" + lo.lo, "example", lo.example, LANG, "es");
         if (ex) node.append(el("div", { class: "example" }, el("strong", { text: ex.title }), el("p", { text: ex.problem }), el("ol", {}, ex.steps.map(s2 => el("li", { text: s2 })))));
         node.append(el("div", { class: "row" },
-          el("button", { class: "btn small primary", type: "button", onclick: () => startPractice(qlist, "Practicando FL-" + lo.lo + " " + lo.title) }, "Practicar (" + qlist.length + ")"),
-          el("span", { class: "note", text: "Dominio " + mastery(qlist) + " %" })));
+          el("button", { class: "btn small primary", type: "button", onclick: () => startPractice(qlist, L("Practicando FL-") + lo.lo + " " + lo.title) }, L("Practicar (") + qlist.length + ")"),
+          el("span", { class: "note", text: L("Dominio ") + mastery(qlist) + " %" })));
         body.append(node);
       }
     }
@@ -438,7 +448,7 @@ const LO_PAGE = lo => { const x = Q.find(y => y.sec === lo); return x ? x.page :
 let cardState = null;
 let glossMode = "dict", glossQuery = "";
 function viewCards(v) {
-  v.append(el("div", { class: "row", role: "group", "aria-label": "Modo" },
+  v.append(el("div", { class: "row", role: "group", "aria-label": L("Modo") },
     el("button", { class: "btn small" + (glossMode === "dict" ? " primary" : ""), type: "button", onclick: () => { glossMode = "dict"; render(); } }, LANG === "es" ? "Diccionario" : "Dictionary"),
     el("button", { class: "btn small" + (glossMode === "cards" ? " primary" : ""), type: "button", onclick: () => { glossMode = "cards"; render(); } }, LANG === "es" ? "Tarjetas" : "Flashcards")));
   if (glossMode === "dict") return viewDictionary(v);
@@ -480,21 +490,21 @@ function viewFlashcards(v) {
   if (!cardState) cardState = { order: shuffle(CARDS.map((_, i) => i)).sort((a, b) => ((P.cards[a] || {}).box || 0) - ((P.cards[b] || {}).box || 0)), i: 0, flip: false };
   const idx = cardState.order[cardState.i % cardState.order.length], [term, defEs, defEn] = CARDS[idx], def = LANG === "es" ? defEs : defEn;
   const known = Object.values(P.cards).filter(c => c.box >= 2).length;
-  v.append(el("div", { class: "row spread" }, el("h2", { text: "Glosario" }), el("span", { class: "muted mono", text: known + "/" + CARDS.length + " dominados" })));
-  v.append(el("button", { class: "flash", type: "button", style: "margin-top:12px", "aria-label": "Girar tarjeta", onclick: () => { cardState.flip = !cardState.flip; render(); } },
-    el("span", { class: "eyebrow", text: cardState.flip ? (LANG === "es" ? "Definición (explicación propia)" : "Definition (own explanation)") : "Término · toca para girar" }),
+  v.append(el("div", { class: "row spread" }, el("h2", { text: L("Glosario") }), el("span", { class: "muted mono", text: known + "/" + CARDS.length + L(" dominados") })));
+  v.append(el("button", { class: "flash", type: "button", style: "margin-top:12px", "aria-label": L("Girar tarjeta"), onclick: () => { cardState.flip = !cardState.flip; render(); } },
+    el("span", { class: "eyebrow", text: cardState.flip ? (LANG === "es" ? "Definición (explicación propia)" : "Definition (own explanation)") : L("Término · toca para girar") }),
     cardState.flip ? el("span", { class: "def", text: def }) : el("span", { class: "term", text: term })));
   const mark = ok => { const c = Object.assign({ box: 0 }, P.cards[idx]); c.box = ok ? Math.min(c.box + 1, 4) : 0; c.last = Date.now(); P.cards[idx] = c; save(); cardState.i++; cardState.flip = false; render(); };
   v.append(el("div", { class: "row spread", style: "margin-top:12px" },
-    el("div", { class: "row" }, el("button", { class: "btn", type: "button", onclick: () => mark(false) }, "Repasar otra vez"), el("button", { class: "btn primary", type: "button", onclick: () => mark(true) }, "Me lo sé")),
-    ext(GLOSSARY_URL(term.split(" / ")[0]), "Definición oficial ↗")));
+    el("div", { class: "row" }, el("button", { class: "btn", type: "button", onclick: () => mark(false) }, L("Repasar otra vez")), el("button", { class: "btn primary", type: "button", onclick: () => mark(true) }, L("Me lo sé"))),
+    ext(GLOSSARY_URL(term.split(" / ")[0]), L("Definición oficial ↗"))));
 }
 
 // ---------------- progress & backup ----------------
 let resetArmed = false;
 function viewProgress(v) {
-  v.append(el("h2", { text: "Progreso" }));
-  const t = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: "Capítulo" }), el("th", { class: "num", text: "Vistas" }), el("th", { class: "num", text: "Acierto" }), el("th", { class: "num", text: "Dominio" }))));
+  v.append(el("h2", { text: L("Progreso") }));
+  const t = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: L("Capítulo") }), el("th", { class: "num", text: L("Vistas") }), el("th", { class: "num", text: L("Acierto") }), el("th", { class: "num", text: L("Dominio") }))));
   const tb = el("tbody");
   for (const ch of [1, 2, 3, 4, 5, 6]) {
     const list = Q.filter(x => x.ch === ch), seen = list.filter(x => P.q[x.id]).length;
@@ -503,14 +513,14 @@ function viewProgress(v) {
   }
   for (const k of [1, 2, 3]) {
     const list = Q.filter(x => x.k === k);
-    tb.append(el("tr", {}, el("td", { text: "Todas las K" + k }), el("td", { class: "num", text: list.filter(x => P.q[x.id]).length + "/" + list.length }), el("td", { class: "num", text: "" }), el("td", { class: "num", text: mastery(list) + " %" })));
+    tb.append(el("tr", {}, el("td", { text: L("Todas las K") + k }), el("td", { class: "num", text: list.filter(x => P.q[x.id]).length + "/" + list.length }), el("td", { class: "num", text: "" }), el("td", { class: "num", text: mastery(list) + " %" })));
   }
   t.append(tb); v.append(el("div", { class: "tablebox", style: "margin-top:10px" }, t));
-  v.append(el("p", { class: "note", style: "margin-top:8px", text: "Dominio: una pregunta cuenta como dominada cuando la aciertas tres veces seguidas; si la fallas, vuelve a cero." }));
+  v.append(el("p", { class: "note", style: "margin-top:8px", text: L("Dominio: una pregunta cuenta como dominada cuando la aciertas tres veces seguidas; si la fallas, vuelve a cero.") }));
   if (P.exams.length) v.append(examHistory());
 
   // backup
-  const ta = el("textarea", { id: "syncCode", "aria-label": "Código de progreso", placeholder: "Aquí aparecerá tu código, o pega aquí el código del otro dispositivo." });
+  const ta = el("textarea", { id: "syncCode", "aria-label": L("Código de progreso"), placeholder: L("Aquí aparecerá tu código, o pega aquí el código del otro dispositivo.") });
   const file = el("input", { type: "file", id: "importFile", accept: ".json,application/json", hidden: true });
   file.addEventListener("change", async () => {
     const f = file.files[0]; if (!f) return;
@@ -518,34 +528,35 @@ function viewProgress(v) {
     catch (e) { toast("No se pudo leer el fichero: " + e.message); }
   });
   const panel = el("section", { class: "panel", style: "margin-top:20px" },
-    el("h3", { text: "Copia de seguridad y sincronización" }),
-    el("p", { class: "note", text: "Tu progreso solo vive en este navegador. Para pasarlo al móvil (o al revés): «Copiar progreso» aquí, y «Pegar y fusionar» en el otro dispositivo. Al fusionar se conserva, para cada pregunta, la respuesta más reciente, y se juntan los simulacros de los dos." }),
+    el("h3", { text: L("Copia de seguridad y sincronización") }),
+    el("p", { class: "note", text: L("Tu progreso solo vive en este navegador. Para pasarlo al móvil (o al revés): «Copiar progreso» aquí, y «Pegar y fusionar» en el otro dispositivo. Al fusionar se conserva, para cada pregunta, la respuesta más reciente, y se juntan los simulacros de los dos.") }),
     ta,
     el("div", { class: "row" },
       el("button", { class: "btn primary", type: "button", onclick: async () => {
         const code = await encodeProgress(); ta.value = code;
         try { await navigator.clipboard.writeText(code); toast("Código copiado al portapapeles."); }
         catch { ta.focus(); ta.select(); toast("Selecciona el texto y cópialo a mano."); }
-      } }, "Copiar progreso"),
+      } }, L("Copiar progreso")),
       el("button", { class: "btn", type: "button", onclick: async () => {
         if (!ta.value.trim()) { toast("Pega primero el código del otro dispositivo en el cuadro."); return; }
         try { P = merge(P, await decodeProgress(ta.value)); save(); ta.value = ""; toast("Progreso fusionado."); render(); }
-        catch (e) { toast(e.message || "Código no válido."); }
-      } }, "Pegar y fusionar")),
+        catch (e) { toast(e.message || L("Código no válido.")); }
+      } }, L("Pegar y fusionar"))),
     el("div", { class: "row" },
       el("button", { class: "btn", type: "button", onclick: () => {
         const blob = new Blob([JSON.stringify(P, null, 1)], { type: "application/json" });
         const a = el("a", { href: URL.createObjectURL(blob), download: "ctfl-progreso-" + new Date().toISOString().slice(0, 10) + ".json" });
         document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-      } }, "Descargar copia (.json)"),
-      el("button", { class: "btn", type: "button", onclick: () => file.click() }, "Importar copia (.json)"), file),
+      } }, L("Descargar copia (.json)")),
+      el("button", { class: "btn", type: "button", onclick: () => file.click() }, L("Importar copia (.json)")), file),
     el("div", { class: "row", style: "margin-top:6px" },
-      el("button", { class: "btn small danger", type: "button", onclick: () => { if (resetArmed) { P = blank(); save(); resetArmed = false; toast("Progreso borrado."); render(); } else { resetArmed = true; render(); } } }, resetArmed ? "Pulsa otra vez para borrar todo el progreso" : "Borrar progreso")));
+      el("button", { class: "btn small danger", type: "button", onclick: () => { if (resetArmed) { P = blank(); save(); resetArmed = false; toast("Progreso borrado."); render(); } else { resetArmed = true; render(); } } }, resetArmed ? L("Pulsa otra vez para borrar todo el progreso") : L("Borrar progreso"))));
   v.append(panel);
 }
 
 // ---------------- boot ----------------
 document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => { resetArmed = false; go(b.dataset.view); }));
+applyStaticLang();
 document.querySelectorAll("#langToggle button").forEach(b => {
   b.setAttribute("aria-pressed", String(b.dataset.lang === LANG));
   b.addEventListener("click", () => setLang(b.dataset.lang));
@@ -557,7 +568,7 @@ window.addEventListener("online", onlineChip); window.addEventListener("offline"
 (async function boot() {
   load(); onlineChip();
   try { await loadData(); }
-  catch (e) { $("#view").replaceChildren(el("p", { class: "empty", text: "No se pudo cargar el banco de preguntas. Comprueba la conexión la primera vez que abras la app; después funciona sin conexión." })); return; }
+  catch (e) { $("#view").replaceChildren(el("p", { class: "empty", text: L("No se pudo cargar el banco de preguntas. Comprueba la conexión la primera vez que abras la app; después funciona sin conexión.") })); return; }
   loadExam(); if (exam) startTick();
   const h = location.hash.slice(1); if (VIEWS.includes(h)) current = h;
   if (exam && !exam.done) current = "simulacro";
@@ -569,7 +580,7 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") {
     reg.addEventListener("updatefound", () => {
       const nw = reg.installing; if (!nw) return;
       nw.addEventListener("statechange", () => {
-        if (nw.state === "installed" && navigator.serviceWorker.controller) toast("Hay una versión nueva del banco.", { label: "Actualizar", fn: () => nw.postMessage("skipWaiting") });
+        if (nw.state === "installed" && navigator.serviceWorker.controller) toast("Hay una versión nueva del banco.", { label: L("Actualizar"), fn: () => nw.postMessage("skipWaiting") });
       });
     });
   }).catch(() => {});
