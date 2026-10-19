@@ -1,0 +1,46 @@
+# Banco CTFL
+
+An offline-first study app for the **ISTQB® Certified Tester Foundation Level (CTFL) v4.0** exam: practice by chapter or learning objective, timed mock exams that follow the official exam structure, a review queue for wrong answers, study notes mapped to the syllabus, and a glossary deck.
+
+**Live:** https://teoxis.github.io/ctfl-study/ · Interface in Spanish; questions and options in English, as in the exam.
+
+> Unofficial study material. All questions are original, written and reviewed against the CTFL Syllabus v4.0.1. They are not taken from the ISTQB exam or the official Sample Exams. ISTQB® is a registered trademark of the International Software Testing Qualifications Board.
+
+## What it does
+
+- **Mock exams with the official distribution.** 40 questions, 1 point each, pass mark 26 (65%), 60 minutes or 75 for non-native speakers. Each exam draws exactly the number of questions per chapter (8/6/4/11/9/2), per learning-objective group and per K-level (8 K1, 24 K2, 8 K3) defined in the ISTQB *Exam Structures & Rules tables* v1.19 (2026-08-19). Questions you have seen least in previous mock exams are drawn first. Results are broken down by chapter and K-level.
+- **541 questions**, at least 6 per learning objective (64 LOs) and more on the single-LO exam groups and the K3 objectives. K3 items are application exercises (equivalence partitioning, 2- and 3-value BVA, decision tables, state transitions, ATDD, three-point/ratio/extrapolation estimation, prioritization with dependencies, defect reports). The bank allows **10 consecutive mock exams without repeating a single question**.
+- **Study notes (Temario)** per learning objective: K-level, syllabus page, an original summary in Spanish, key terms linked to the official ISTQB glossary, a worked example for every K3 objective, and a "Practise this LO" button. Every answered question links back to its LO and page.
+- **Offline PWA.** Install it from the browser ("Add to Home Screen" on iOS, "Install app" on Android/desktop); everything, question bank included, is cached by the service worker.
+- **Your progress stays on your device** (localStorage). To move it between phone and laptop, copy a text code or download a `.json` backup and merge it on the other device (newest answer per question wins; mock-exam histories are joined).
+
+## Repository layout
+
+```
+index.html, styles.css, app.js     the app (no build step, no dependencies)
+sw.js, manifest.webmanifest        offline support and install metadata
+data/bank-ch1..6.json              question bank, one file per chapter (generated)
+data/exam.json                     official exam blueprint (generated)
+data/syllabus.json                 study notes (generated)
+tools/                             sources of the bank and the build/verification scripts
+```
+
+## Rebuilding the bank
+
+```bash
+python3 tools/build.py            # writes data/*.json and validates the bank
+python3 tools/verify_numeric.py   # re-derives every numeric answer from the published question text
+python3 tools/make_icons.py       # regenerates the icons
+```
+
+`build.py` fails if any LO has fewer than 6 questions, any question is malformed, the blueprint does not match the official totals, or any of 200 simulated mock exams breaks the official distribution. Numeric K3 answers are computed in code (`tools/gen_k3.py`) and independently re-checked by `verify_numeric.py`.
+
+After changing any file, bump `VERSION` in `sw.js` so installed copies pick up the update.
+
+## Official materials
+
+The app links to the free official documents on istqb.org: the CTFL Syllabus v4.0.1, Sample Exams A–D (questions and answers), the Exam Structures and Rules, and the ISTQB Glossary. Study with the syllabus open; the notes here are a companion, not a replacement.
+
+## License
+
+MIT, see [LICENSE](LICENSE). The ISTQB syllabus and glossary remain © ISTQB and are only linked, not redistributed.
