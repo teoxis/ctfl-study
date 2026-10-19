@@ -1,0 +1,192 @@
+# term | chapter | definición | en tu trabajo   (source for data/glossary.json; own explanations, not the official wording)
+statement | 0 | Una instrucción del código: una línea que hace algo (asignar, llamar a una función, devolver). En el pseudocódigo del examen, cada línea como "x = 1" es una sentencia. | `const user = login()` o `cy.get('#btn').click()` son sentencias.
+decision | 0 | Un punto del código donde el programa elige un camino según una condición: IF, CASE/switch, o la comprobación de un bucle. | Un `if (isPremium)` en el código del producto es una decisión.
+branch | 0 | Cada uno de los caminos que salen de una decisión. Un IF tiene dos ramas: la verdadera y la falsa (aunque no haya ELSE, la falsa existe: es "saltarse el bloque"). | Probar un descuento solo con usuarios premium ejercita la rama verdadera; te falta la falsa.
+condition | 0 | Una expresión que vale verdadero o falso, como "a > 10". Una decisión puede tener una o varias condiciones (a > 10 AND b < 5). | `expect(status).to.eq(200)` comprueba una condición.
+control flow | 4 | El orden en que se ejecutan las sentencias, con sus saltos y bucles. Se dibuja como un grafo: los nodos son sentencias o bloques y las flechas, las ramas. | Seguir mentalmente "si falla el login va a /error, si no a /home" es seguir el flujo de control.
+test object | 1 | Lo que se está probando: un componente, un sistema, una API, un documento… | La web de Freepik, o una feature concreta como la descarga de recursos.
+test objective | 1 | El para qué de las pruebas: encontrar defectos, comprobar requisitos, reducir riesgo, dar confianza, informar para decidir… | "Que el pago no se rompa antes del release" era un objetivo de prueba.
+verification | 1 | Comprobar que el producto cumple lo especificado. "¿Lo construimos bien?" | Comprobar que el botón hace exactamente lo que dice el ticket de Jira.
+validation | 1 | Comprobar que el producto sirve para las necesidades reales del usuario. "¿Construimos lo correcto?" | Ver si el usuario realmente encuentra el botón y le sirve, aunque cumpla el ticket.
+dynamic testing | 1 | Probar ejecutando el software. | Toda tu suite de Cypress es prueba dinámica.
+static testing | 1 | Probar sin ejecutar el software: revisar documentos o código, o usar análisis estático. | Revisar un PR o pasar ESLint es prueba estática.
+debugging | 1 | Encontrar la causa de un fallo, analizarla y corregirla. Es tarea de desarrollo, no de prueba. | Cuando localizaste la regresión de Chrome headless en el CI, eso fue depuración.
+confirmation testing | 1 | Volver a probar tras un arreglo para confirmar que el defecto está corregido. | Reejecutar el caso del bug que reportaste cuando el dev lo marca como arreglado.
+regression testing | 1 | Probar que un cambio no ha roto lo que ya funcionaba. | Tu suite E2E en cada PR era, sobre todo, prueba de regresión.
+quality | 1 | Grado en que un producto satisface las necesidades y expectativas de los stakeholders. | No es solo "sin bugs": también rápido, usable y seguro.
+quality control | 1 | Actividades orientadas al producto para comprobar su calidad. La prueba es una forma de control de calidad. | Ejecutar tests y reportar bugs.
+quality assurance | 1 | Actividades orientadas al proceso para prevenir defectos: mejorar cómo se trabaja. | Definir que todo PR necesita tests y revisión antes de mergear.
+error | 1 | Una equivocación humana. Produce defectos. | El dev confunde "<" con "<=".
+defect | 1 | Una imperfección en un producto de trabajo (código, requisito, test…). También "bug" o "fault". | El "<" erróneo que quedó en el código.
+failure | 1 | Cuando el sistema, al ejecutarse, hace algo distinto de lo esperado. Lo causa un defecto (o el entorno). | El usuario con 18 años no puede registrarse.
+root cause | 1 | El motivo de fondo por el que se produjo el problema. Corregirlo evita defectos parecidos. | "No había test para los límites de edad" como causa de fondo.
+root cause analysis | 1 | El análisis para encontrar la causa raíz de un problema, no solo su síntoma. | Un post-mortem tras un incidente en producción.
+exhaustive testing | 1 | Probar todas las combinaciones posibles de entradas y condiciones. Es imposible salvo en casos triviales (principio 2). | Nunca podrías probar todas las búsquedas posibles en un buscador.
+risk-based testing | 1 | Decidir qué probar, cuánto y en qué orden según el nivel de riesgo. | Priorizar el checkout sobre el pie de página.
+test planning | 1 | Definir objetivos y el enfoque de las pruebas dentro de las restricciones del proyecto. | Decidir al inicio de un sprint qué se automatiza y qué se prueba a mano.
+test monitoring | 1 | Recoger información continuamente para saber cómo van las pruebas respecto al plan. | Mirar el dashboard del CI y cuántos casos de Xray están pasados.
+test control | 1 | Tomar acciones cuando el seguimiento muestra desviaciones del plan. | Repriorizar tests cuando se acerca el release y vas tarde.
+test analysis | 1 | Analizar la base de prueba para decidir QUÉ probar: identificar condiciones de prueba. | Leer el ticket y apuntar "probar login con email no verificado".
+test design | 1 | Convertir las condiciones de prueba en casos de prueba: CÓMO probarlo. | Concretar datos, pasos y resultado esperado del caso.
+test implementation | 1 | Preparar lo necesario para ejecutar: procedimientos, scripts, datos y entorno. | Escribir el spec de Cypress y crear el usuario de prueba.
+test execution | 1 | Ejecutar las pruebas, comparar resultados reales con esperados y reportar anomalías. | Lanzar la suite y revisar los rojos.
+test completion | 1 | Cerrar las pruebas: archivar testware, informe final y lecciones aprendidas. | El resumen de QA al final de un proyecto o release.
+test condition | 1 | Un aspecto que se puede probar. Responde a "qué probar". | "El cupón caducado debe rechazarse".
+test case | 1 | Precondiciones, entradas, acciones, resultados esperados y postcondiciones para probar una condición. | Cada uno de tus 556 casos en Xray.
+test procedure | 1 | Uno o varios casos en orden de ejecución, con preparación y limpieza. | Un spec de Cypress con su `before` y `after`.
+test strategy | 1 | El enfoque general de pruebas de la organización o del proyecto. | "Unitarias en cada PR, E2E de regresión cada noche, manual exploratoria antes del release".
+testware | 1 | Todo lo que produce la prueba: planes, casos, scripts, datos, informes. | Tu repo de Cypress, fixtures y reportes.
+test charter | 1 | La misión escrita de una sesión exploratoria: qué explorar, con qué y para descubrir qué. | "Explora la subida de archivos con formatos raros para encontrar errores de validación".
+coverage item | 1 | Lo que una técnica te dice que cubras (partición, valor frontera, rama…). Se usa para medir la cobertura. | Cada rama del código es un elemento de cobertura en la cobertura de ramas.
+test suite | 1 | Un conjunto de casos o procedimientos de prueba que se ejecutan juntos. | Tu suite de regresión E2E.
+test log | 1 | El registro de lo que pasó al ejecutar: qué se ejecutó, cuándo y con qué resultado. | Los logs y vídeos de Cypress en el CI.
+stub | 1 | Un sustituto que hace de componente al que llama el que pruebas, devolviendo respuestas fijas. | `cy.intercept()` devolviendo un JSON fijo es un stub de la API.
+driver | 1 | Un componente que llama al que pruebas, cuando lo real que lo llamaría aún no existe. | Un script que invoca directamente una función para probarla.
+traceability | 1 | Poder seguir el vínculo entre base de prueba, condiciones, casos, resultados y defectos. | Enlazar en Jira/Xray un caso con su historia de usuario y sus bugs.
+test basis | 1 | Todo lo que sirve de base para analizar y diseñar pruebas: requisitos, historias, diseños, código… | El ticket de Jira con sus criterios de aceptación.
+coverage | 1 | Cuánto de algo (requisitos, ramas, particiones…) han ejercitado las pruebas, en porcentaje. | "El 80 % de las historias del sprint tienen test".
+test management | 1 | Planificar, estimar, seguir y controlar las actividades de prueba. | Lo que hace un QA lead.
+test manager | 1 | El rol responsable de la gestión de pruebas. | Quien organiza la estrategia y reporta a dirección.
+tester | 1 | El rol responsable de los aspectos técnicos: analizar, diseñar, implementar y ejecutar pruebas. | Tu día a día.
+confirmation bias | 1 | Tendencia a aceptar lo que confirma lo que ya creemos. Hace difícil aceptar que el propio código tiene defectos. | El dev que dice "en mi máquina funciona".
+whole team approach | 1 | Todo el equipo es responsable de la calidad; cualquiera con las habilidades necesarias puede hacer cualquier tarea. | Devs escribiendo tests y QA revisando requisitos en el refinement.
+independence of testing | 1 | Probar alguien distinto del autor para ver cosas que este no ve. Hay grados: del propio autor a un equipo externo. | Tú, como QA, probando lo que hizo un dev.
+software development lifecycle | 2 | El conjunto de fases de desarrollo de un software y cómo se organizan (SDLC). | Scrum con sprints en Freepik.
+sequential development model | 2 | Modelo en fases que van una tras otra (cascada, modelo en V). El software funcionando aparece tarde. | Proyectos con meses de desarrollo y una fase de pruebas al final.
+iterative development model | 2 | Modelo que entrega en ciclos repetidos, con software funcionando pronto (Scrum, Kanban, espiral…). | Releases cada sprint.
+test level | 2 | Grupos de actividades de prueba organizadas según la etapa: componente, integración de componentes, sistema, integración de sistemas, aceptación. | Unitarias, E2E y UAT son niveles distintos.
+test-driven development | 2 | TDD: el desarrollador escribe el test del componente antes del código, y luego el código para que pase. | Rojo → verde → refactorizar.
+acceptance test-driven development | 2 | ATDD: los tests se escriben a partir de los criterios de aceptación, antes de implementar, entre negocio, dev y QA. | Escribir el test E2E de una historia antes de que el dev empiece.
+behavior-driven development | 2 | BDD: el comportamiento se describe en Given/When/Then, legible por negocio, y se convierte en tests. | Escenarios de Cucumber.
+DevOps | 2 | Cultura y prácticas que unen desarrollo y operaciones para entregar rápido y con calidad, con mucha automatización. | Pipelines que despliegan solos si los tests pasan.
+continuous integration | 2 | Integrar cambios en el repositorio a menudo, con build y tests automáticos en cada cambio. | GitHub Actions ejecutando tu suite en cada PR.
+continuous delivery | 2 | Tener el software siempre listo para desplegar, con el paso a producción automatizado hasta el final. | Merge a main → despliegue a staging automático.
+shift left | 2 | Probar lo antes posible en el ciclo (revisar requisitos, tests antes del código), sin abandonar las pruebas finales. | Participar en el refinement para detectar huecos antes de programar.
+retrospective | 2 | Reunión al final de una iteración o proyecto para ver qué fue bien, qué no y qué mejorar. | La retro del sprint.
+process improvement | 2 | Cambiar cómo se trabaja para mejorar la calidad y la eficiencia, a menudo a partir de retros. | Añadir una plantilla de reporte de bugs tras ver bugs mal descritos.
+component testing | 2 | Probar componentes aislados (funciones, clases, módulos). También "unit testing". | Tests de Jest de una función.
+component integration testing | 2 | Probar las interfaces e interacciones entre componentes. | Probar que el frontend y la API hablan bien entre sí.
+system testing | 2 | Probar el sistema completo, funcional y no funcional, normalmente de extremo a extremo. | Tus E2E de Cypress sobre la web entera.
+system integration testing | 2 | Probar las interfaces con otros sistemas y servicios externos. | Probar la integración con la pasarela de pago o con Google login.
+acceptance testing | 2 | Validar que el sistema está listo para usarse y cubre las necesidades del negocio: UAT, operacional, contractual, alfa/beta. | Product owner aprobando la feature en staging.
+functional testing | 2 | Probar QUÉ hace el sistema: sus funciones. | Que la búsqueda devuelva resultados correctos.
+non-functional testing | 2 | Probar CÓMO de bien lo hace: rendimiento, usabilidad, seguridad, compatibilidad… | Medir que la búsqueda responde en menos de 1 s.
+black-box testing | 2 | Pruebas basadas en la especificación, sin mirar el código interno. | La mayoría de tus E2E.
+white-box testing | 2 | Pruebas basadas en la estructura interna del código. | Escribir un test para cubrir una rama que el informe de cobertura marca en rojo.
+impact analysis | 2 | Evaluar qué partes afecta un cambio, para decidir cuánta regresión hace falta. | "Han tocado el componente de cabecera: hay que pasar las E2E de navegación".
+maintenance testing | 2 | Probar un sistema en producción cuando se modifica, se migra o se retira. | Probar tras actualizar la versión de PHP del servidor.
+review | 3 | Examinar un producto de trabajo para encontrar anomalías o evaluarlo. Es prueba estática. | Revisar un PR o un documento de requisitos.
+static analysis | 3 | Analizar código u otros productos con herramientas, sin ejecutarlos. | ESLint, TypeScript señalando tipos erróneos, SonarQube.
+stakeholder | 3 | Cualquier persona o grupo con interés en el proyecto: usuarios, negocio, devs, soporte… | Product, marketing, soporte al cliente.
+anomaly | 3 | Cualquier condición que se desvía de lo esperado. Puede ser un defecto o no. | Algo raro que anotas en una revisión antes de confirmar si es bug.
+moderator | 3 | En una revisión, quien facilita las reuniones y asegura que funcionen bien. | Quien lleva la reunión de revisión.
+scribe | 3 | En una revisión, quien registra las anomalías y decisiones. | Quien toma notas.
+reviewer | 3 | Quien revisa el producto de trabajo buscando anomalías. | Tú revisando el PR de un compañero.
+review leader | 3 | Quien tiene la responsabilidad general de la revisión: quién participa, cuándo y dónde. | El responsable de organizar la revisión.
+author | 3 | Quien crea el producto de trabajo y corrige los defectos que salen de la revisión. | El dev que abrió el PR.
+informal review | 3 | Revisión sin proceso definido ni documentación formal. Objetivo principal: detectar anomalías. | "¿Le echas un ojo a esto?".
+walkthrough | 3 | Revisión dirigida por el autor; sirve para evaluar, formar, lograr consenso y detectar anomalías. | El dev presentando su diseño al equipo.
+technical review | 3 | Revisión por personas técnicamente cualificadas, dirigida por un moderador, para llegar a decisiones técnicas. | Revisión de arquitectura.
+inspection | 3 | La revisión más formal: proceso completo, métricas, buscar el máximo de anomalías. El autor no puede ser líder ni escriba. | Raro en startups; típico en sectores regulados.
+formal review | 3 | Revisión con proceso definido y resultados documentados. | Revisiones con checklist, actas y métricas.
+black-box test technique | 4 | Técnica que deriva pruebas de la especificación, sin mirar el código: particiones, valores frontera, tablas de decisión, transiciones de estado. | Diseñar casos a partir del ticket.
+white-box test technique | 4 | Técnica que deriva pruebas de la estructura interna: cobertura de sentencias y de ramas. | Diseñar casos mirando el código.
+experience-based test technique | 4 | Técnica basada en el conocimiento y la intuición del tester: predicción de errores, exploratoria, listas de comprobación. | "Seguro que con un emoji en el nombre se rompe".
+test technique | 4 | Un procedimiento para decidir qué condiciones, casos y datos de prueba usar. | Cualquiera de las técnicas del capítulo 4.
+equivalence partitioning | 4 | Dividir los datos en particiones que el sistema debería tratar igual y probar al menos un valor de cada una, también de las inválidas. | Edad: menor de 18, 18–65, mayor de 65 → 3 particiones.
+equivalence partition | 4 | Cada grupo de valores que se espera que el sistema procese igual. | "Todas las edades entre 18 y 65".
+each choice coverage | 4 | Con varios grupos de particiones: cada partición de cada grupo aparece al menos en un test, sin combinar todas. | Probar cada navegador y cada idioma al menos una vez, no todas las parejas.
+boundary value analysis | 4 | Probar los extremos de particiones ordenadas, donde suelen esconderse los fallos. 2 valores: frontera y vecino. 3 valores: frontera y sus dos vecinos. | Probar 17, 18, 65 y 66 en el registro por edad.
+boundary value | 4 | El valor mínimo o máximo de una partición ordenada. | 18 y 65 en "18–65".
+decision table testing | 4 | Técnica que combina condiciones y acciones en una tabla; cada columna es una regla y se prueba cada regla posible. | Descuento según sea premium y tenga cupón: 4 combinaciones.
+decision table | 4 | La tabla con condiciones en filas, reglas en columnas y las acciones resultantes. | La tabla de reglas de precios.
+state transition testing | 4 | Técnica que prueba los estados de un sistema y los cambios entre ellos provocados por eventos. | Suscripción: activa → cancelada → reactivada.
+state diagram | 4 | Dibujo de estados (círculos) y transiciones (flechas con evento y, opcionalmente, guarda/acción). | El diagrama del ciclo de vida de un pedido.
+state table | 4 | La misma información en tabla: estados en filas, eventos en columnas; muestra también las transiciones inválidas. | Una celda vacía = "ese evento no se permite en ese estado".
+0-switch coverage | 4 | Cubrir todas las transiciones válidas, una a una. También "valid transitions coverage". | Pasar al menos una vez por cada flecha del diagrama.
+statement testing | 4 | Técnica de caja blanca que diseña tests para ejecutar las sentencias del código. | Añadir un test para la línea que nunca se ejecutaba.
+statement coverage | 4 | Sentencias ejecutadas / sentencias ejecutables, en %. 100 % no garantiza haber probado toda la lógica. | El "% Stmts" de un informe de cobertura (Istanbul, Jest).
+branch testing | 4 | Técnica de caja blanca que diseña tests para recorrer las ramas del código. | Probar el IF con verdadero y con falso.
+branch coverage | 4 | Ramas recorridas / total de ramas, en %. Es más exigente que la de sentencias: 100 % de ramas implica 100 % de sentencias, no al revés. | El "% Branch" de un informe de cobertura.
+code coverage | 4 | Medir qué parte del código ejecutan las pruebas (sentencias, ramas…). | El informe de cobertura del CI.
+error guessing | 4 | Anticipar errores, defectos y fallos según la experiencia del tester, y diseñar pruebas para ellos. | Probar campos vacíos, textos enormes, doble clic en "Pagar".
+fault attack | 4 | Forma metódica de predicción de errores: lista de fallos posibles y tests para provocarlos. | Una lista de "ataques" típicos a formularios.
+exploratory testing | 4 | Diseñar, ejecutar y evaluar a la vez mientras aprendes el producto. | Usar una feature nueva sin guion para ver qué se rompe.
+session-based testing | 4 | Prueba exploratoria en sesiones de tiempo fijo, con un charter y un informe al final. | Bloques de 60 min explorando una feature con notas.
+checklist-based testing | 4 | Diseñar y ejecutar pruebas a partir de una lista de comprobación de condiciones a verificar. | Tu checklist de "antes de cada release".
+user story | 4 | Una funcionalidad descrita desde el usuario: "Como <rol> quiero <objetivo> para <beneficio>", con criterios de aceptación. | Un ticket de Jira de producto.
+INVEST | 4 | Criterios de una buena historia: Independent, Negotiable, Valuable, Estimable, Small, Testable. | La T de Testable es tu parte en el refinement.
+acceptance criteria | 4 | Las condiciones que una historia debe cumplir para que el negocio la acepte. | Los puntos "Dado / Cuando / Entonces" del ticket.
+specification by example | 4 | Describir el comportamiento con ejemplos concretos, que luego sirven de tests. | "Si compras 3 packs, el 4.º es gratis" como ejemplo en el ticket.
+test plan | 5 | Documento que describe objetivos, recursos y procesos de las pruebas de un proyecto. | El plan de QA de un lanzamiento grande.
+test approach | 5 | Cómo se aplica la estrategia en un proyecto concreto: niveles, tipos, técnicas, entregables. | "Para esta feature: E2E del flujo feliz y exploratoria de errores".
+release planning | 5 | Planificar un release completo; el tester participa escribiendo historias testables y analizando riesgos. | El planning trimestral de producto.
+iteration planning | 5 | Planificar un sprint; el tester estima, analiza riesgos y desglosa tareas de prueba. | El sprint planning.
+entry criteria | 5 | Condiciones que deben cumplirse para empezar una actividad de prueba (en ágil, Definition of Ready). | "No se prueba sin entorno de staging desplegado".
+exit criteria | 5 | Condiciones para dar una actividad por terminada (en ágil, Definition of Done). | "Todos los tests críticos en verde y sin bugs bloqueantes".
+definition of done | 5 | Lo que debe cumplir un trabajo para considerarse terminado en ágil. | "Con tests, revisado y desplegado en staging".
+definition of ready | 5 | Lo que debe cumplir una historia para poder empezar a trabajarla. | "Con criterios de aceptación y diseños".
+test estimation | 5 | Predecir el esfuerzo de las pruebas. | "La regresión de este release son 2 días".
+Wideband Delphi | 5 | Estimación por expertos: cada uno estima por separado, se comentan las diferencias y se repite hasta acercarse. | Planning poker es una variante.
+three-point estimation | 5 | Estimar con optimista (a), más probable (m) y pesimista (b): E = (a + 4m + b) / 6; desviación = (b − a) / 6. | a=2, m=4, b=12 → E = 5 días.
+planning poker | 5 | Variante de Wideband Delphi con cartas; todos enseñan su estimación a la vez. | Las cartas de story points.
+test case prioritization | 5 | Ordenar la ejecución de los casos: por riesgo, por cobertura o por requisitos, respetando dependencias. | Ejecutar primero los tests del checkout.
+test pyramid | 5 | Muchos tests rápidos y aislados abajo (componente) y pocos lentos de extremo a extremo arriba. | Muchas unitarias, menos de API, pocas E2E de Cypress.
+testing quadrants | 5 | Clasifican las pruebas según dos ejes: negocio o tecnología, y apoyo al equipo o crítica al producto (Q1–Q4). | Unitarias = Q1; usabilidad = Q3; rendimiento = Q4.
+risk | 5 | Un evento futuro posible con consecuencias negativas. | "Que el pago falle en Safari".
+risk level | 5 | Probabilidad × impacto. Decide cuánto y cuándo probar. | Pago (alto) frente a pie de página (bajo).
+risk likelihood | 5 | La probabilidad de que ocurra el riesgo. | Código nuevo y complejo → probabilidad alta.
+risk impact | 5 | El daño si ocurre. | Que no se pueda pagar → impacto alto.
+risk management | 5 | Análisis (identificar y evaluar) y control (mitigar y monitorizar) de riesgos. | Gestionar qué podría ir mal en un release.
+project risk | 5 | Riesgo para la gestión del proyecto: retrasos, personas, presupuesto, proveedores, herramientas. | "El único QA se va de vacaciones antes del release".
+product risk | 5 | Riesgo de que el producto falle en calidad: funcionalidad, rendimiento, seguridad, usabilidad… | "La búsqueda puede ser lenta con muchos resultados".
+risk analysis | 5 | Identificar riesgos y evaluar su nivel. | Brainstorming de "qué puede romperse".
+risk identification | 5 | Hacer la lista de riesgos (brainstorming, talleres, entrevistas, checklists…). | Lista de riesgos del release.
+risk assessment | 5 | Clasificar los riesgos y determinar su probabilidad, impacto y nivel. | Marcar cada riesgo como alto, medio o bajo.
+risk control | 5 | Las medidas ante los riesgos: mitigarlos y monitorizarlos. | Añadir tests extra al pago.
+risk mitigation | 5 | Acciones para reducir el nivel de un riesgo. Probar es una de ellas. | Automatizar la regresión del checkout.
+risk monitoring | 5 | Vigilar que las medidas funcionan y detectar riesgos nuevos. | Revisar los riesgos en cada sprint.
+test metric | 5 | Una medida de las pruebas: avance, cobertura, defectos, calidad del producto, coste… | "87/87 specs en verde"; "223 bugs reportados".
+test progress report | 5 | Informe periódico del avance de las pruebas durante el proyecto. | El estado de QA en la daily o en un canal de Slack.
+test completion report | 5 | Informe al cerrar las pruebas: resumen, calidad, desviaciones y lecciones. | El informe final de QA de un release.
+dashboard | 5 | Panel visual con métricas de prueba. | El panel de GitHub Actions o de Xray.
+configuration management | 5 | Identificar, versionar y controlar los elementos de prueba y el testware. | Git, versiones de entorno y de datos de prueba.
+configuration item | 5 | Cada elemento bajo gestión de la configuración. | Un spec, un fixture, una versión del build.
+baseline | 5 | Versión aprobada de un conjunto de elementos, que solo cambia con un proceso formal. | Un tag de release en Git.
+defect management | 5 | El proceso de registrar, clasificar, seguir y cerrar defectos. | El flujo de un bug en Jira, de "Abierto" a "Cerrado".
+defect report | 5 | Documento de un defecto: título, pasos, resultado esperado y real, entorno, severidad, prioridad, evidencias. | Tus tickets de bug con capturas y vídeo.
+severity | 5 | Cuánto daño hace el defecto al sistema (lo valora QA). | Caída del pago = severidad crítica.
+priority | 5 | Lo urgente que es arreglarlo (lo decide negocio). | Un logo mal en la portada: severidad baja, prioridad alta.
+test management tool | 6 | Herramienta para gestionar casos, ejecuciones, defectos y requisitos. | Xray y Jira.
+test automation | 6 | Usar software para ejecutar pruebas y comparar resultados. Beneficios: repetibilidad, rapidez. Riesgos: expectativas irreales, mantenimiento. | Tu suite de Cypress.
+flaky test | 7 | Un test que a veces pasa y a veces falla sin que cambie el código. Suele deberse a esperas, datos compartidos, orden de ejecución o servicios externos. Destruye la confianza en la suite. | Los specs de Cypress que fallaban "solo en el CI" y pasaban al reintentar.
+test double | 7 | Nombre general de cualquier sustituto de una dependencia real en un test: dummy, stub, spy, mock y fake. | Todo lo que hacías con `cy.intercept` o `cy.stub`.
+mock | 7 | Un doble que además VERIFICA cómo lo llamaron (cuántas veces, con qué argumentos). En la calle se usa "mock" para cualquier doble, pero en rigor no es lo mismo que un stub. | Comprobar que se llamó a la API de analítica con el evento correcto.
+spy | 7 | Un doble que envuelve la función real y registra las llamadas, sin cambiar lo que hace. | `cy.spy(window, 'open')` para comprobar que se abrió una pestaña.
+fake | 7 | Una implementación real pero simplificada, que funciona de verdad aunque no sirva para producción. | Una base de datos en memoria (SQLite) en lugar de la real.
+smoke test | 7 | Unas pocas pruebas rápidas de lo más crítico para saber si el build merece más pruebas. Si falla, se para todo. | "¿Carga la home, funciona el login, se puede descargar?" tras cada despliegue.
+sanity test | 7 | Comprobación rápida y concreta de que un arreglo o cambio pequeño funciona, antes de seguir. | Verificar a mano el bug arreglado antes de lanzar la regresión entera.
+end-to-end test | 7 | Prueba de un flujo completo de usuario a través de todas las capas: interfaz, API, base de datos. | Tus specs de Cypress: registrarse, buscar, descargar.
+page object model | 7 | Patrón que encapsula cada página o componente de la interfaz en una clase con sus selectores y acciones, para que los tests no repitan selectores y sean fáciles de mantener. | Tu suite de Cypress estaba organizada así.
+test fixture | 7 | Los datos y el estado fijo que prepara un test antes de ejecutarse. | Los JSON de la carpeta `cypress/fixtures`.
+contract testing | 7 | Comprobar que proveedor y consumidor de una API siguen respetando el "contrato" acordado (campos, tipos), sin levantar todo el sistema. Herramienta típica: Pact. | Que el frontend no se rompa porque backend renombró un campo.
+mutation testing | 7 | Introducir pequeños cambios (mutantes) en el código a propósito y ver si los tests los detectan. Mide la calidad de los tests, no solo la cobertura. | Cambiar ">" por ">=" y comprobar que algún test falla.
+property-based testing | 7 | En lugar de ejemplos fijos, describes una propiedad que siempre debe cumplirse y la herramienta genera cientos de entradas para intentar romperla. | "Ordenar una lista dos veces da lo mismo que ordenarla una".
+snapshot testing | 7 | Guardar la salida (HTML, JSON, imagen) y fallar si cambia respecto a la guardada. Útil, pero con riesgo de aceptar cambios sin mirarlos. | Las capturas de regresión visual.
+visual regression testing | 7 | Comparar capturas de pantalla con una referencia para detectar cambios visuales no deseados. | Detectar que un CSS movió el botón de descarga.
+shift right | 7 | Probar y observar también en producción: monitorización, feature flags, canary, pruebas A/B. Complementa al shift left. | Mirar errores en Sentry tras cada release.
+canary release | 7 | Desplegar la nueva versión a un pequeño porcentaje de usuarios, vigilar métricas y ampliar si va bien. | Activar el nuevo buscador al 5 % de los usuarios.
+feature flag | 7 | Un interruptor en el código para activar o desactivar una funcionalidad sin desplegar de nuevo. Complica las pruebas: hay que probar ambos estados. | Probar la web con la nueva cabecera activada y desactivada.
+test trophy | 7 | Alternativa a la pirámide (Kent C. Dodds): el grueso de los tests en integración, más análisis estático en la base y pocos E2E. | Argumento típico en equipos de frontend.
+test isolation | 7 | Cada test debe poder ejecutarse solo y en cualquier orden, sin depender de otros. Su falta es la causa número uno de flaky tests. | Crear el usuario en el `beforeEach` en lugar de reutilizar el del test anterior.
+test parallelization | 7 | Ejecutar tests a la vez en varias máquinas o procesos para acortar el tiempo de CI. Exige aislamiento. | Repartir la suite de Cypress entre varios runners.
+quarantine | 7 | Apartar temporalmente un test flaky de la suite que bloquea los merges, con un ticket para arreglarlo, en lugar de borrarlo o reintentarlo sin fin. | Etiquetar un spec como `@flaky` para que no bloquee el pipeline.
+test data management | 7 | Cómo se crean, aíslan, anonimizan y limpian los datos de prueba. Mala gestión = tests frágiles y riesgos de privacidad. | Usuarios de prueba creados por API en lugar de a mano.
+observability | 7 | Poder entender qué pasa dentro del sistema en producción a partir de logs, métricas y trazas. | Cruzar un fallo de usuario con los logs del backend.
+SLO | 7 | Service Level Objective: un objetivo medible de fiabilidad, como "el 99,9 % de las peticiones responden en menos de 300 ms". | Sirve de criterio de aceptación no funcional.
+performance testing | 7 | Medir velocidad y comportamiento bajo carga. Variantes: load (carga esperada), stress (más allá del límite), soak (larga duración), spike (picos). | Ver cómo responde la búsqueda con 1.000 usuarios a la vez (k6, JMeter).
+accessibility testing | 7 | Comprobar que personas con discapacidad pueden usar el producto (lectores de pantalla, contraste, teclado). Norma de referencia: WCAG. | Pasar axe en los tests de Cypress.
+security testing | 7 | Buscar vulnerabilidades: inyecciones, autenticación débil, datos expuestos. Referencia: OWASP Top 10. | Comprobar que un usuario no puede ver los archivos de otro cambiando el ID en la URL.
+test automation framework | 7 | El conjunto de herramientas, librerías, convenciones y utilidades sobre el que se escriben los tests automáticos. | Cypress + Page Objects + comandos propios + CI.
+LLM evaluation | 7 | Medir de forma sistemática cómo de bien responde un modelo de lenguaje en tareas concretas, con casos y criterios de corrección. | Tu repo `llm-capability-evals`.
+LLM-as-a-judge | 7 | Usar un modelo de lenguaje para puntuar las respuestas de otro. Rápido, pero con sesgos; por eso tus evals usan corrección automática sin juez. | El tipo de eval que evitaste a propósito.

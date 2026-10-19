@@ -16,37 +16,37 @@ const CHAPTER_NAMES = {1: "Fundamentals of Testing", 2: "Testing Throughout the 
 const LETTERS = ["A", "B", "C", "D"];
 
 const CARDS = [
- ["Test basis", "Todo lo que sirve de base para el análisis y diseño de pruebas: requisitos, historias de usuario, diseño, código, riesgos…"],
- ["Test condition", "Aspecto comprobable de un componente o sistema, identificado como base para las pruebas. Responde a \"qué probar\"."],
- ["Test case", "Conjunto de precondiciones, entradas, acciones, resultados esperados y postcondiciones, diseñado a partir de condiciones de prueba."],
- ["Test procedure", "Secuencia de casos de prueba en orden de ejecución, con las acciones necesarias para preparar y cerrar."],
- ["Testware", "Productos de trabajo que se generan al probar: planes, casos, scripts, datos, informes…"],
- ["Coverage item", "Atributo o combinación de atributos derivado de una o varias condiciones de prueba mediante una técnica; sirve para medir la cobertura."],
- ["Error / Defect / Failure", "Error: equivocación humana. Defecto: imperfección en un producto de trabajo. Fallo: el sistema hace algo distinto de lo esperado al ejecutarse."],
- ["Root cause", "Razón fundamental por la que ocurre un problema. Atacarla previene defectos similares."],
- ["Confirmation testing", "Comprobar que el defecto original se ha corregido."],
- ["Regression testing", "Comprobar que un cambio no ha causado efectos adversos en lo que ya funcionaba."],
- ["Maintenance testing", "Pruebas de un sistema en producción por modificaciones, migraciones del entorno o retirada."],
- ["Shift left", "Probar antes en el ciclo de vida, sin descuidar las pruebas posteriores."],
- ["TDD / ATDD / BDD", "TDD: tests de componente antes del código. ATDD: tests a partir de los criterios de aceptación, antes de implementar. BDD: comportamiento en Given/When/Then que se traduce en tests ejecutables."],
- ["Static testing", "Prueba sin ejecutar el software (revisiones y análisis estático). Encuentra defectos directamente."],
- ["Inspection", "El tipo de revisión más formal: proceso completo, métricas, objetivo de encontrar el máximo de anomalías. El autor no puede ser líder ni escriba."],
- ["Walkthrough", "Revisión dirigida por el autor. Objetivos: evaluar, formar, lograr consenso, generar ideas y detectar anomalías."],
- ["Technical review", "Revisores técnicamente cualificados dirigidos por un moderador. Objetivo: consenso y decisiones sobre un problema técnico."],
- ["Equivalence partitioning", "Divide los datos en particiones que se procesan igual. Un valor por partición basta, incluidas las inválidas."],
- ["Boundary value analysis", "Prueba los valores frontera de particiones ordenadas. 2 valores: la frontera y su vecino. 3 valores: la frontera y sus dos vecinos."],
- ["Decision table testing", "Combina condiciones y acciones en reglas. Con n condiciones booleanas hay 2^n columnas; se cubren las factibles."],
- ["State transition testing", "Coberturas: todos los estados, transiciones válidas (0-switch) y todas las transiciones (también las inválidas)."],
- ["Statement coverage", "Sentencias ejecutadas / sentencias ejecutables."],
- ["Branch coverage", "Ramas ejercitadas / total de ramas. Subsume a la cobertura de sentencias."],
- ["Exploratory testing", "Diseño, ejecución y evaluación simultáneos mientras se aprende el producto; en sesiones con un test charter."],
- ["Risk level", "Combinación de la probabilidad y el impacto del riesgo. Determina la intensidad y la prioridad de las pruebas."],
- ["Product vs project risk", "Producto: características de calidad (funcionalidad, rendimiento, seguridad…). Proyecto: gestión del proyecto (retrasos, personas, proveedores, herramientas)."],
- ["Entry / exit criteria", "Entrada: precondiciones para empezar (Definition of Ready). Salida: cuándo se da por terminado (Definition of Done)."],
- ["Test pyramid", "Muchos tests rápidos y aislados en las capas bajas; pocos tests lentos extremo a extremo en las altas."],
- ["Testing quadrants", "Cuadrantes según dos ejes: de negocio o técnicos, y de apoyo al equipo o críticos con el producto (Q1 a Q4)."],
- ["Three-point estimation", "E = (a + 4m + b) / 6; SD = (b − a) / 6."],
- ["Configuration management", "Identificar, versionar y controlar el testware y los elementos de prueba; las líneas base permiten reproducir resultados."],
+ ["Test basis", "Todo lo que se usa como base para analizar y diseñar las pruebas: requisitos, historias de usuario, diseños, código, riesgos…", "Everything used as the basis for test analysis and design: requirements, user stories, designs, code, risks…"],
+ ["Test condition", "Un aspecto que se puede probar de un componente o sistema. Responde a «qué probar».", "A testable aspect of a component or system. It answers \"what to test\"."],
+ ["Test case", "Precondiciones, entradas, acciones, resultados esperados y postcondiciones, diseñados a partir de una condición de prueba. Responde a «cómo probarlo».", "Preconditions, inputs, actions, expected results and postconditions, derived from a test condition. It answers \"how to test it\"."],
+ ["Test procedure", "Casos de prueba ordenados para ejecutarse, con lo necesario para preparar el entorno antes y dejarlo limpio después.", "Test cases in execution order, with the steps needed to set things up before and clean up after."],
+ ["Testware", "Todo lo que se produce al probar: planes, casos, scripts, datos de prueba, informes…", "Everything produced by testing: plans, cases, scripts, test data, reports…"],
+ ["Coverage item", "Lo que una técnica te pide cubrir (una partición, un valor frontera, una rama…). Sirve para medir la cobertura: cubiertos / identificados.", "What a technique tells you to cover (a partition, a boundary value, a branch…). It is how coverage is measured: covered / identified."],
+ ["Error / Defect / Failure", "Una persona comete un error (equivocación); el error deja un defecto en el código o en un documento; al ejecutarse, el defecto puede provocar un fallo visible.", "A person makes an error (mistake); the error leaves a defect in code or a document; when executed, the defect may cause a visible failure."],
+ ["Root cause", "El motivo de fondo por el que se produjo el problema. Si se corrige, se evitan defectos parecidos en el futuro.", "The underlying reason the problem happened. Fixing it prevents similar defects in the future."],
+ ["Confirmation testing", "Volver a probar después de un arreglo para confirmar que el defecto original está corregido.", "Testing again after a fix to confirm the original defect is gone."],
+ ["Regression testing", "Probar que un cambio no ha roto nada de lo que ya funcionaba. Es la candidata ideal para automatizar.", "Testing that a change has not broken anything that already worked. It is the prime candidate for automation."],
+ ["Maintenance testing", "Probar un sistema que ya está en producción cuando se modifica, se migra a otro entorno o se retira.", "Testing a system already in production when it is modified, migrated to another environment or retired."],
+ ["Shift left", "Empezar a probar lo antes posible en el ciclo de vida (revisar requisitos, escribir tests antes del código), sin abandonar las pruebas de las fases finales.", "Starting testing as early as possible in the lifecycle (reviewing requirements, writing tests before code), without dropping later testing."],
+ ["TDD / ATDD / BDD", "TDD: el desarrollador escribe el test del componente antes del código. ATDD: los tests salen de los criterios de aceptación, antes de implementar. BDD: el comportamiento se describe en Given/When/Then y se convierte en tests ejecutables.", "TDD: the developer writes the component test before the code. ATDD: tests come from the acceptance criteria, before implementation. BDD: behaviour is written as Given/When/Then and turned into executable tests."],
+ ["Static testing", "Probar sin ejecutar el software: revisiones y análisis estático. Encuentra defectos directamente, no fallos.", "Testing without running the software: reviews and static analysis. It finds defects directly, not failures."],
+ ["Inspection", "La revisión más formal: proceso completo, métricas y el objetivo de encontrar el máximo de anomalías. El autor no puede ser líder de la revisión ni escriba.", "The most formal review: full process, metrics, and the goal of finding as many anomalies as possible. The author cannot be the review leader or the scribe."],
+ ["Walkthrough", "Revisión dirigida por el autor. Sirve para evaluar, formar a los participantes, llegar a consensos, generar ideas y detectar anomalías.", "A review led by the author. Used to evaluate, educate the participants, reach consensus, generate ideas and detect anomalies."],
+ ["Technical review", "Revisión hecha por personas técnicamente cualificadas, dirigida por un moderador, para llegar a un consenso y tomar decisiones sobre un problema técnico.", "A review by technically qualified reviewers, led by a moderator, to reach consensus and make decisions on a technical problem."],
+ ["Equivalence partitioning", "Divide los datos en grupos (particiones) que el sistema debería tratar igual. Basta un valor de cada partición, también de las inválidas.", "Splits data into groups (partitions) the system should treat the same way. One value per partition is enough, including the invalid ones."],
+ ["Boundary value analysis", "Prueba los extremos de las particiones ordenadas, donde más fallos se esconden. Con 2 valores: la frontera y su vecino de la otra partición. Con 3 valores: la frontera y sus dos vecinos.", "Tests the edges of ordered partitions, where failures tend to hide. 2-value: the boundary and its neighbour in the other partition. 3-value: the boundary and both neighbours."],
+ ["Decision table testing", "Una tabla que combina condiciones y acciones; cada columna es una regla. Con n condiciones de sí/no salen 2^n columnas, y se prueban las que son posibles.", "A table combining conditions and actions; each column is a rule. With n yes/no conditions there are 2^n columns, and the feasible ones are tested."],
+ ["State transition testing", "Prueba los estados del sistema y los saltos entre ellos. Coberturas: todos los estados, todas las transiciones válidas (0-switch) y todas las transiciones, incluidas las inválidas.", "Tests the system's states and the moves between them. Coverage levels: all states, all valid transitions (0-switch), and all transitions including invalid ones."],
+ ["Statement coverage", "Porcentaje de líneas (sentencias) del código que tus tests han ejecutado: sentencias ejecutadas / sentencias ejecutables.", "Percentage of the code's lines (statements) your tests have run: executed statements / executable statements."],
+ ["Branch coverage", "Porcentaje de caminos de decisión recorridos: cada IF tiene dos ramas, la verdadera y la falsa, y hay que pasar por ambas. Es más exigente que la de sentencias: si cubres el 100 % de las ramas, también cubres el 100 % de las sentencias, pero no al revés.", "Percentage of decision paths taken: each IF has two branches, true and false, and both must be exercised. It is stronger than statement coverage: 100% branch coverage guarantees 100% statement coverage, but not the other way round."],
+ ["Exploratory testing", "Diseñar, ejecutar y evaluar las pruebas a la vez, aprendiendo el producto sobre la marcha. Se organiza en sesiones con un objetivo escrito (test charter).", "Designing, running and evaluating tests at the same time while learning the product. Organised in sessions with a written goal (test charter)."],
+ ["Risk level", "Probabilidad × impacto de un riesgo. Cuanto más alto, antes y más a fondo se prueba esa parte.", "A risk's likelihood × impact. The higher it is, the earlier and more thoroughly that area is tested."],
+ ["Product vs project risk", "Riesgo de producto: que el software falle en calidad (funcionalidad, rendimiento, seguridad…). Riesgo de proyecto: que falle la gestión (retrasos, personas, proveedores, herramientas).", "Product risk: the software falls short on quality (functionality, performance, security…). Project risk: the management side fails (delays, people, suppliers, tools)."],
+ ["Entry / exit criteria", "Entrada: lo que debe cumplirse para empezar a probar (en ágil, Definition of Ready). Salida: lo que debe cumplirse para darlo por terminado (Definition of Done).", "Entry: what must be true to start testing (in Agile, Definition of Ready). Exit: what must be true to call it finished (Definition of Done)."],
+ ["Test pyramid", "Muchos tests pequeños, rápidos y aislados en la base (componente); pocos tests lentos de extremo a extremo en la cima.", "Many small, fast, isolated tests at the bottom (component); few slow end-to-end tests at the top."],
+ ["Testing quadrants", "Clasifican las pruebas con dos ejes: orientadas al negocio o a la tecnología, y de apoyo al equipo o de crítica al producto. Salen 4 cuadrantes, Q1 a Q4.", "Classify tests on two axes: business- or technology-facing, and supporting the team or critiquing the product. That gives 4 quadrants, Q1 to Q4."],
+ ["Three-point estimation", "Estimación con tres valores: optimista (a), más probable (m) y pesimista (b). E = (a + 4m + b) / 6; desviación = (b − a) / 6.", "Estimate from three values: optimistic (a), most likely (m) and pessimistic (b). E = (a + 4m + b) / 6; standard deviation = (b − a) / 6."],
+ ["Configuration management", "Identificar, versionar y controlar el testware y los elementos de prueba. Las líneas base permiten repetir exactamente una prueba.", "Identifying, versioning and controlling testware and test items. Baselines let you reproduce a test exactly."],
 ];
 
 // ---------------- persistence ----------------
@@ -106,14 +106,33 @@ async function decodeProgress(code) {
 }
 
 // ---------------- data ----------------
-let Q = [], QBY = {}, EXAM = null, SYL = null, LO_INFO = {};
+let Q = [], QBY = {}, EXAM = null, SYL = null, LO_INFO = {}, I18N = {}, GLOSS = [];
 async function loadData() {
   const files = [1, 2, 3, 4, 5, 6].map(n => `data/bank-ch${n}.json`).concat(["data/exam.json", "data/syllabus.json"]);
   const res = await Promise.all(files.map(f => fetch(f).then(r => { if (!r.ok) throw new Error(f); return r.json(); })));
   Q = res.slice(0, 6).flat();
   EXAM = res[6]; SYL = res[7];
+  // Optional: the other-language half of every text (tools/translate.py). Without it the app shows the originals.
+  GLOSS = await fetch("data/glossary.json").then(r => r.ok ? r.json() : []).catch(() => []);
+  I18N = await fetch("data/i18n.json").then(r => r.ok ? r.json() : {}).then(d => d.items || {}).catch(() => ({}));
   for (const x of Q) QBY[x.id] = x;
   for (const ch of SYL.chapters) for (const s of ch.sections) for (const lo of s.los) LO_INFO[lo.lo] = { ...lo, ch: ch.ch, sec: s.sec, secTitle: s.title };
+}
+
+// ---------------- language ----------------
+// Originals: question + options in English, explanations and notes in Spanish. tr() picks the requested language.
+let LANG = "en";
+try { LANG = localStorage.getItem("ctfl-lang") === "es" ? "es" : "en"; } catch (e) { /* storage blocked: default */ }
+const tr = (key, field, original, lang = LANG, native = "en") => (lang !== native && I18N[key] && I18N[key].t[field] != null) ? I18N[key].t[field] : original;
+const qText = (x, lang = LANG) => tr("q:" + x.id, "q", x.q, lang);
+const optText = (x, i, lang = LANG) => { const o = tr("q:" + x.id, "o", null, lang); return o ? o[i] : x.o[i]; };
+const expText = (x, lang = LANG) => tr("e:" + x.id, "e", x.e, lang, "es");
+function setLang(l) {
+  LANG = l;
+  try { localStorage.setItem("ctfl-lang", l); } catch (e) { /* ignore */ }
+  document.documentElement.lang = l;
+  document.querySelectorAll("#langToggle button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+  render();
 }
 
 // ---------------- helpers ----------------
@@ -169,11 +188,12 @@ function questionCard(item, o) {
   card.append(el("div", { class: "qhead" },
     el("span", { class: "row" }, el("span", { class: "badge" + (x.k === 3 ? " k3" : ""), text: x.lo + " · K" + x.k }), el("span", { class: "eyebrow", text: "Cap. " + x.ch })),
     el("span", { class: "eyebrow mono", text: o.counter || x.id })));
-  card.append(el("p", { class: "stem", text: x.q }));
+  const stem = el("p", { class: "stem", text: qText(x) });
+  card.append(stem);
   if (x.code) card.append(el("pre", { class: "code" }, x.code));
   const box = el("div", { class: "opts", role: "radiogroup", "aria-label": "Opciones" });
   item.order.forEach((oi, pos) => {
-    const b = el("button", { class: "opt", role: "radio", type: "button", "aria-checked": String(o.chosen === pos) }, el("span", { class: "k", text: LETTERS[pos] }), el("span", { text: x.o[oi] }));
+    const b = el("button", { class: "opt", role: "radio", type: "button", "aria-checked": String(o.chosen === pos) }, el("span", { class: "k", text: LETTERS[pos] }), el("span", { class: "otext", "data-oi": oi, text: optText(x, oi) }));
     if (o.reveal) { b.disabled = true; if (pos === item.correct) b.classList.add("right"); else if (pos === o.chosen) b.classList.add("wrong"); }
     else b.addEventListener("click", () => o.onPick(pos));
     box.append(b);
@@ -183,11 +203,21 @@ function questionCard(item, o) {
     const ok = o.chosen === item.correct;
     card.append(el("div", { class: "explain" + (ok ? "" : " bad") },
       el("span", { class: "verdict " + (ok ? "good" : "bad"), text: o.chosen == null ? "Sin responder · correcta: " + LETTERS[item.correct] : ok ? "Correcta" : "Incorrecta · correcta: " + LETTERS[item.correct] }),
-      el("p", { text: x.e }),
+      el("p", { class: "etext", text: expText(x) }),
       el("p", { class: "note" },
         el("a", { href: "#temario", onclick: ev => { ev.preventDefault(); openLO(x.sec); } }, "Estudia esto: " + x.lo + " " + (info.title || "")),
         " · ", ext(SYLLABUS_URL, "Syllabus v4.0.1, pág. " + x.page))));
   }
+  // Shows this one question in the other language without switching the whole app.
+  let flipped = false;
+  card.querySelector(".qhead").append(el("button", { class: "btn small flipq", type: "button", onclick: ev => {
+    flipped = !flipped;
+    const l = flipped ? (LANG === "en" ? "es" : "en") : LANG;
+    stem.textContent = qText(x, l);
+    card.querySelectorAll(".otext").forEach(s => { s.textContent = optText(x, Number(s.dataset.oi), l); });
+    const e = card.querySelector(".etext"); if (e) e.textContent = expText(x, l);
+    ev.currentTarget.textContent = flipped ? "Original" : (LANG === "en" ? "Ver en ES" : "See in EN");
+  } }, LANG === "en" ? "Ver en ES" : "See in EN"));
   return card;
 }
 let openChapters = new Set();
@@ -209,7 +239,7 @@ function viewPractice(v) {
     const list = Q.filter(x => x.ch === ch), m = mastery(list);
     const n = EXAM.groups.filter(g => g.ch === ch).reduce((s, g) => s + g.n, 0);
     grid.append(el("button", { class: "chap", type: "button", "aria-pressed": String(selectedCh.has(ch)), onclick: () => { selectedCh.has(ch) ? selectedCh.delete(ch) : selectedCh.add(ch); render(); } },
-      el("span", { class: "name", text: ch + ". " + CHAPTER_NAMES[ch] }),
+      el("span", { class: "name", text: ch + ". " + tr("ch:" + ch, "title", CHAPTER_NAMES[ch]) }),
       el("div", { class: "bar", "aria-hidden": "true" }, el("i", { style: "width:" + m + "%" })),
       el("span", { class: "meta" }, el("span", { text: list.length + " preguntas · " + n + " en examen" }), el("span", { text: m + " %" }))));
   }
@@ -379,18 +409,19 @@ function viewSyllabus(v) {
     const list = Q.filter(x => x.ch === ch.ch);
     const d = el("details", { class: "chapter", open: openChapters.has(ch.ch) });
     d.addEventListener("toggle", () => { d.open ? openChapters.add(ch.ch) : openChapters.delete(ch.ch); });
-    d.append(el("summary", {}, el("h3", { text: ch.ch + ". " + ch.title }), el("span", { class: "eyebrow", text: ch.minutes + " min · " + mastery(list) + " %" })));
+    d.append(el("summary", {}, el("h3", { text: ch.ch + ". " + tr("ch:" + ch.ch, "title", ch.title) }), el("span", { class: "eyebrow", text: ch.minutes + " min · " + mastery(list) + " %" })));
     const body = el("div", { class: "chapbody" });
     for (const s of ch.sections) {
-      body.append(el("div", { class: "row spread" }, el("h3", { text: s.sec + " " + s.title }), ext(SYLLABUS_URL, "pág. " + s.page)));
+      body.append(el("div", { class: "row spread" }, el("h3", { text: s.sec + " " + tr("sec:" + s.sec, "title", s.title) }), ext(SYLLABUS_URL, "pág. " + s.page)));
       for (const lo of s.los) {
         const qlist = Q.filter(x => x.sec === lo.lo);
         const node = el("article", { class: "lo", id: "lo-" + lo.lo },
-          el("div", { class: "row" }, el("span", { class: "badge" + (lo.k === 3 ? " k3" : ""), text: "FL-" + lo.lo + " · K" + lo.k }), el("strong", { text: lo.title })),
-          el("p", { class: "note", text: "LO: " + lo.stmt + " · Syllabus v4.0.1, pág. " + LO_PAGE(lo.lo) }),
-          el("p", { text: lo.sum }),
+          el("div", { class: "row" }, el("span", { class: "badge" + (lo.k === 3 ? " k3" : ""), text: "FL-" + lo.lo + " · K" + lo.k }), el("strong", { text: tr("lo:" + lo.lo, "title", lo.title) })),
+          el("p", { class: "note", text: "LO: " + tr("lo:" + lo.lo, "stmt", lo.stmt) + " · Syllabus v4.0.1, pág. " + LO_PAGE(lo.lo) }),
+          el("p", { text: tr("lonote:" + lo.lo, "sum", lo.sum, LANG, "es") }),
           el("div", { class: "terms" }, lo.terms.map(t => el("a", { href: GLOSSARY_URL(t), target: "_blank", rel: "noopener", title: "Abrir en el glosario oficial" }, t))));
-        if (lo.example) node.append(el("div", { class: "example" }, el("strong", { text: lo.example.title }), el("p", { text: lo.example.problem }), el("ol", {}, lo.example.steps.map(s2 => el("li", { text: s2 })))));
+        const ex = lo.example && tr("lonote:" + lo.lo, "example", lo.example, LANG, "es");
+        if (ex) node.append(el("div", { class: "example" }, el("strong", { text: ex.title }), el("p", { text: ex.problem }), el("ol", {}, ex.steps.map(s2 => el("li", { text: s2 })))));
         node.append(el("div", { class: "row" },
           el("button", { class: "btn small primary", type: "button", onclick: () => startPractice(qlist, "Practicando FL-" + lo.lo + " " + lo.title) }, "Practicar (" + qlist.length + ")"),
           el("span", { class: "note", text: "Dominio " + mastery(qlist) + " %" })));
@@ -405,13 +436,53 @@ const LO_PAGE = lo => { const x = Q.find(y => y.sec === lo); return x ? x.page :
 
 // ---------------- glossary cards ----------------
 let cardState = null;
+let glossMode = "dict", glossQuery = "";
 function viewCards(v) {
+  v.append(el("div", { class: "row", role: "group", "aria-label": "Modo" },
+    el("button", { class: "btn small" + (glossMode === "dict" ? " primary" : ""), type: "button", onclick: () => { glossMode = "dict"; render(); } }, LANG === "es" ? "Diccionario" : "Dictionary"),
+    el("button", { class: "btn small" + (glossMode === "cards" ? " primary" : ""), type: "button", onclick: () => { glossMode = "cards"; render(); } }, LANG === "es" ? "Tarjetas" : "Flashcards")));
+  if (glossMode === "dict") return viewDictionary(v);
+  viewFlashcards(v);
+}
+const GLOSS_CH = { 0: ["Conceptos de código", "Code concepts"], 7: ["Más allá del examen: lo que oirás en el trabajo", "Beyond the exam: what you will hear at work"] };
+// `text` inside backticks is shown as inline code.
+const withCode = txt => String(txt).split(/`([^`]+)`/).map((part, i) => i % 2 ? el("code", { text: part }) : part);
+function viewDictionary(v) {
+  const es = LANG === "es";
+  const q = el("input", { type: "search", class: "search", value: glossQuery, placeholder: es ? "Buscar término… (p. ej. branch)" : "Search a term… (e.g. branch)", "aria-label": es ? "Buscar término" : "Search a term" });
+  const list = el("div", { class: "stack", style: "margin-top:12px" });
+  const draw = () => {
+    const needle = glossQuery.trim().toLowerCase();
+    list.replaceChildren();
+    for (const ch of [0, 1, 2, 3, 4, 5, 6, 7]) {
+      const items = GLOSS.filter(g => g.ch === ch).map(g => ({ g, t: es ? g.es : (I18N["gl:" + g.term] || {}).t || g.es }))
+        .filter(({ g, t }) => !needle || (g.term + " " + t.def).toLowerCase().includes(needle));
+      if (!items.length) continue;
+      list.append(el("h3", { text: GLOSS_CH[ch] ? GLOSS_CH[ch][es ? 0 : 1] : ch + ". " + tr("ch:" + ch, "title", CHAPTER_NAMES[ch]) }));
+      for (const { g, t } of items) {
+        const node = el("article", { class: "lo gloss" },
+          el("div", { class: "row spread" }, el("strong", { text: g.term }), g.ch >= 1 && g.ch <= 6 ? ext(GLOSSARY_URL(g.term), es ? "Glosario oficial ↗" : "Official glossary ↗") : ""),
+          el("p", { text: t.def }),
+          el("p", { class: "note" }, el("strong", { text: es ? "En tu trabajo: " : "In your work: " }), ...withCode(t.work)));
+        if (g.code) node.append(el("pre", { class: "code" }, g.code));
+        list.append(node);
+      }
+    }
+    if (!list.children.length) list.append(el("p", { class: "empty", text: es ? "Ningún término coincide." : "No matching terms." }));
+  };
+  q.addEventListener("input", () => { glossQuery = q.value; draw(); });
+  v.append(el("div", { style: "margin-top:12px" }, q));
+  v.append(el("p", { class: "note", style: "margin-top:6px", text: (es ? "Explicaciones propias de " : "Own explanations of ") + GLOSS.length + (es ? " términos: los clave del syllabus y los que oirás en el trabajo, con ejemplos. El enlace lleva a la definición oficial." : " terms: the syllabus key terms and the ones you will hear at work, with examples. The link opens the official definition.") }));
+  v.append(list);
+  draw();
+}
+function viewFlashcards(v) {
   if (!cardState) cardState = { order: shuffle(CARDS.map((_, i) => i)).sort((a, b) => ((P.cards[a] || {}).box || 0) - ((P.cards[b] || {}).box || 0)), i: 0, flip: false };
-  const idx = cardState.order[cardState.i % cardState.order.length], [term, def] = CARDS[idx];
+  const idx = cardState.order[cardState.i % cardState.order.length], [term, defEs, defEn] = CARDS[idx], def = LANG === "es" ? defEs : defEn;
   const known = Object.values(P.cards).filter(c => c.box >= 2).length;
   v.append(el("div", { class: "row spread" }, el("h2", { text: "Glosario" }), el("span", { class: "muted mono", text: known + "/" + CARDS.length + " dominados" })));
   v.append(el("button", { class: "flash", type: "button", style: "margin-top:12px", "aria-label": "Girar tarjeta", onclick: () => { cardState.flip = !cardState.flip; render(); } },
-    el("span", { class: "eyebrow", text: cardState.flip ? "Definición (resumen propio)" : "Término · toca para girar" }),
+    el("span", { class: "eyebrow", text: cardState.flip ? (LANG === "es" ? "Definición (explicación propia)" : "Definition (own explanation)") : "Término · toca para girar" }),
     cardState.flip ? el("span", { class: "def", text: def }) : el("span", { class: "term", text: term })));
   const mark = ok => { const c = Object.assign({ box: 0 }, P.cards[idx]); c.box = ok ? Math.min(c.box + 1, 4) : 0; c.last = Date.now(); P.cards[idx] = c; save(); cardState.i++; cardState.flip = false; render(); };
   v.append(el("div", { class: "row spread", style: "margin-top:12px" },
@@ -475,6 +546,10 @@ function viewProgress(v) {
 
 // ---------------- boot ----------------
 document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => { resetArmed = false; go(b.dataset.view); }));
+document.querySelectorAll("#langToggle button").forEach(b => {
+  b.setAttribute("aria-pressed", String(b.dataset.lang === LANG));
+  b.addEventListener("click", () => setLang(b.dataset.lang));
+});
 window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (VIEWS.includes(h) && h !== current) go(h); });
 function onlineChip() { $("#offlineChip").hidden = navigator.onLine; }
 window.addEventListener("online", onlineChip); window.addEventListener("offline", onlineChip);

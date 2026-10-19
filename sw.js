@@ -1,12 +1,12 @@
 /* Service worker: precaches the app and the question bank (cache-first), so the app works offline.
    Bump VERSION whenever any file changes; the page then offers "Actualizar". */
-const VERSION = "ctfl-study-v1.0.0";
+const VERSION = "ctfl-study-v1.1.0";
 const FONT_CACHE = "ctfl-study-fonts";
 const ASSETS = [
   "./", "index.html", "styles.css", "app.js", "manifest.webmanifest",
   "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png",
   "data/bank-ch1.json", "data/bank-ch2.json", "data/bank-ch3.json", "data/bank-ch4.json",
-  "data/bank-ch5.json", "data/bank-ch6.json", "data/exam.json", "data/syllabus.json",
+  "data/bank-ch5.json", "data/bank-ch6.json", "data/exam.json", "data/syllabus.json", "data/i18n.json",
 ];
 
 self.addEventListener("install", event => {
